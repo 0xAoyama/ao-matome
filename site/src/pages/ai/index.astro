@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/posts';
+const posts = getPosts('ai');
+---
+<Base title="AI — 生成AIツール" description="生成AIツールの公式更新、料金差分、使い方、比較表">
+  <h1>AI — 生成AIツール</h1>
+  <p>公式更新、料金差分、使い方、比較表の情報まとめ</p>
+  {posts.map(p => (
+    <a href={`/ai/${p.slug}/`} class="card" style="display:block; margin-top:1rem;">
+      <h3>{p.meta.title}</h3>
+      <p class="meta">{p.meta.published_at} — {p.meta.source_name}</p>
+      <p>{p.meta.summary}</p>
+      <span class="badge">{p.meta.risk_level}</span>
+    </a>
+  ))}
+</Base>
