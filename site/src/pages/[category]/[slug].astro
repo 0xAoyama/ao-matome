@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/posts';
+
+export function getStaticPaths() {
+  const posts = getPosts();
+  return posts.map(p => ({
+    params: { category: p.category, slug: p.slug },
+    props: { post: p },
+  }));
+}
+
+const { post } = Astro.props;
+const lines = post.content.trim().split('\n');
+// Simple markdown to HTML: headings, paragraphs, links, lists
+function md(text: string): string {
+  return text
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, (m) => `<ul>${m}</ul>`)
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/^(?!<[hul])((?!^$).+)$/gm, '<p>$1</p>')
+    .replace(/---/g, '<hr/>');
+}
+const html = md(post.content);
+---
+<Base title={post.meta.title} description={post.meta.summary}>
+  <article>
+    <h1>{post.meta.title}</h1>
+    <p class="meta">
+      {post.meta.published_at} —
+      <a href={post.meta.source_url}>{post.meta.source_name}</a>
+      {post.meta.ymyl && <span class="badge ymyl">YMYL</span>}
+      <span class="badge">{post.meta.risk_level}</span>
+    </p>
+    <p>{post.meta.summary}</p>
+    <Fragment set:html={html} />
+    <div class="disclaimer">
+      <strong>免責事項:</strong> 本記事は公式発表に基づく要約です。正確な情報は<a href={post.meta.source_url}>一次ソース</a>をご確認ください。
+      画像や本文の転載は行っていません。<br/>
+      <strong>確認日:</strong> {post.meta.checked_at}
+    </div>
+  </article>
+  <p style="margin-top:2rem;"><a href={`/${post.category}/`}>&larr; {post.category} 一覧に戻る</a></p>
+</Base>

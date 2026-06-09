@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPosts } from '../lib/posts';
+
+const categories = [
+  { id: 'anime', name: 'Anime — アニメ・ゲーム・推し活', desc: '予約、配信、イベント、グッズ、特典比較' },
+  { id: 'ai', name: 'AI — 生成AIツール', desc: '公式更新、料金差分、使い方、比較表' },
+  { id: 'life', name: 'Life — 生活防衛', desc: '値上げ、セール、ポイント、ふるさと納税、税制変更' },
+];
+const recentPosts = getPosts().slice(0, 6);
+---
+<Base title="トップ" description="matrix-ao — アニメ・AI・生活防衛のまとめサイト">
+  <h1>matrix-ao</h1>
+  <p>アニメ・AI・生活防衛の公式情報をまとめるサイトです。</p>
+
+  <h2 style="margin-top:2rem;">カテゴリ</h2>
+  {categories.map(c => (
+    <a href={`/${c.id}/`} class="card" style="display:block;">
+      <h3>{c.name}</h3>
+      <p class="meta">{c.desc}</p>
+    </a>
+  ))}
+
+  <h2 style="margin-top:2rem;">最新記事</h2>
+  {recentPosts.map(p => (
+    <a href={`/${p.category}/${p.slug}/`} class="card" style="display:block;">
+      <h3>{p.meta.title}</h3>
+      <p class="meta">{p.meta.published_at} — {p.meta.source_name}</p>
+      <p>{p.meta.summary}</p>
+    </a>
+  ))}
+</Base>

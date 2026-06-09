@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/posts';
+const posts = getPosts('anime');
+---
+<Base title="Anime — アニメ・ゲーム・推し活" description="アニメ・ゲーム・推し活の予約、配信、イベント、グッズ、特典比較">
+  <h1>Anime — アニメ・ゲーム・推し活</h1>
+  <p>予約、配信、イベント、グッズ、特典比較の公式情報まとめ</p>
+  {posts.map(p => (
+    <a href={`/anime/${p.slug}/`} class="card" style="display:block; margin-top:1rem;">
+      <h3>{p.meta.title}</h3>
+      <p class="meta">{p.meta.published_at} — {p.meta.source_name}</p>
+      <p>{p.meta.summary}</p>
+      <span class="badge">{p.meta.risk_level}</span>
+    </a>
+  ))}
+</Base>

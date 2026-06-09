@@ -1,0 +1,41 @@
+anime:
+  - name: dアニメストア
+    url: https://anime.dmkt-sp.jp/animestore/tp_pc
+    type: website
+  - name: ファミ通 発売日スケジュール
+    url: https://www.famitsu.com/schedule
+    type: website
+  - name: コラボカフェ
+    url: https://collabo-cafe.com/feed/
+    type: rss
+  - name: 電撃オンライン
+    url: https://dengekionline.com/feed/
+    type: rss
+
+ai:
+  - name: Anthropic News
+    url: https://www.anthropic.com/news
+    type: website
+  - name: OpenAI Blog
+    url: https://openai.com/blog/rss.xml
+    type: rss
+  - name: Google AI Blog
+    url: https://blog.google/technology/ai/rss/
+    type: rss
+  - name: Hugging Face Blog
+    url: https://huggingface.co/blog/feed.xml
+    type: rss
+
+life:
+  - name: 帝国データバンク
+    url: https://www.tdb.co.jp/report/
+    type: website
+  - name: 総務省 ふるさと納税
+    url: https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/
+    type: website
+  - name: 総務省統計局 CPI
+    url: https://www.stat.go.jp/data/cpi/
+    type: website
+  - name: Amazon タイムセール
+    url: https://www.amazon.co.jp/gp/goldbox
+    type: website
