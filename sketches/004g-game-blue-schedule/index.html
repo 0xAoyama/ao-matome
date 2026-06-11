@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matrix-ao ゲームまとめ</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; background: #f4f6fa; color: #222; line-height: 1.7; }
+a { color: #2f5fa7; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.header { background: #2f5fa7; color: #fff; padding: 0; }
+.header-inner { max-width: 1180px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.header h1 { font-size: 1.3rem; letter-spacing: .02em; }
+.header h1 span { color: #ffd54f; }
+.header-nav { display: flex; gap: 16px; font-size: .85rem; }
+.header-nav a { color: #c8daf5; }
+.header-nav a:hover { color: #fff; }
+
+/* Breaking ticker */
+.ticker-bar { background: #1a3e6f; color: #ffd54f; font-size: .8rem; overflow: hidden; white-space: nowrap; }
+.ticker-bar .ticker-inner { display: inline-block; padding: 5px 0; animation: ticker 28s linear infinite; }
+@keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-200%); } }
+.ticker-bar .badge-breaking { background: #e53935; color: #fff; padding: 1px 6px; border-radius: 3px; font-weight: 700; margin-right: 8px; font-size: .75rem; }
+
+/* Layout */
+.container { max-width: 1180px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+
+/* Compliance banner */
+.compliance-banner { grid-column: 1 / -1; background: #e8eef7; border: 1px solid #b5c7e0; border-radius: 8px; padding: 10px 16px; font-size: .78rem; color: #3a5a8a; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.compliance-banner .tag { background: #2f5fa7; color: #fff; padding: 1px 8px; border-radius: 4px; font-weight: 600; }
+.compliance-banner .tag-yellow { background: #f9a825; color: #333; }
+.compliance-banner .tag-red { background: #c62828; color: #fff; }
+
+/* Section common */
+.section-title { font-size: 1.05rem; font-weight: 700; border-left: 4px solid #2f5fa7; padding-left: 10px; margin-bottom: 12px; color: #1a3e6f; }
+
+/* Release calendar */
+.release-calendar { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.cal-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.cal-table th { background: #2f5fa7; color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+.cal-table th:first-child { border-radius: 6px 0 0 0; }
+.cal-table th:last-child { border-radius: 0 6px 0 0; }
+.cal-table td { padding: 8px 10px; border-bottom: 1px solid #e8eef7; vertical-align: middle; }
+.cal-table tr:hover { background: #f0f5ff; }
+.cal-month { background: #e8eef7; font-weight: 700; color: #2f5fa7; }
+.cal-month td { padding: 6px 10px; font-size: .9rem; }
+.badge { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: .7rem; font-weight: 700; color: #fff; margin-right: 3px; }
+.badge-ps5 { background: #003791; }
+.badge-switch { background: #e4002b; }
+.badge-pc { background: #666; }
+.badge-xbox { background: #107c10; }
+
+/* Timeline */
+.timeline { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.tl-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid #eef2f8; font-size: .85rem; }
+.tl-item:last-child { border-bottom: none; }
+.tl-time { color: #888; font-size: .78rem; min-width: 48px; flex-shrink: 0; padding-top: 1px; }
+.tl-cat { font-size: .7rem; font-weight: 700; padding: 1px 6px; border-radius: 3px; flex-shrink: 0; height: fit-content; }
+.cat-release { background: #ffd54f; color: #5d4800; }
+.cat-update { background: #a5d6a7; color: #1b5e20; }
+.cat-sale { background: #ef9a9a; color: #b71c1c; }
+.cat-event { background: #90caf9; color: #0d47a1; }
+.cat-hw { background: #ce93d8; color: #4a148c; }
+
+/* Article card */
+.article-card { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.article-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.article-meta { font-size: .75rem; color: #888; margin-bottom: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+.article-meta .risk-badge { background: #fff3e0; color: #e65100; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+.article-body { font-size: .88rem; line-height: 1.8; margin-bottom: 14px; }
+.article-body p { margin-bottom: 8px; }
+
+/* Thread comments */
+.thread { border-top: 1px solid #e8eef7; padding-top: 12px; }
+.thread h4 { font-size: .85rem; color: #2f5fa7; margin-bottom: 8px; }
+.comment { background: #f7f9fc; border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; font-size: .82rem; }
+.comment .c-header { font-size: .75rem; color: #888; margin-bottom: 4px; }
+.comment .c-name { color: #2f5fa7; font-weight: 600; }
+
+/* Sidebar */
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+.sidebar-box { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.sidebar-box h3 { font-size: .92rem; font-weight: 700; color: #1a3e6f; border-bottom: 2px solid #2f5fa7; padding-bottom: 6px; margin-bottom: 10px; }
+.sidebar-ad { background: #e8eef7; border: 1px dashed #b5c7e0; border-radius: 8px; height: 250px; display: flex; align-items: center; justify-content: center; color: #7a9ac5; font-size: .8rem; }
+.sidebar-ad span { font-size: .7rem; display: block; text-align: center; }
+.ranking-list { list-style: none; counter-reset: rank; }
+.ranking-list li { counter-increment: rank; padding: 7px 0; border-bottom: 1px solid #eef2f8; font-size: .83rem; display: flex; align-items: baseline; gap: 6px; }
+.ranking-list li:last-child { border-bottom: none; }
+.ranking-list li::before { content: counter(rank); background: #2f5fa7; color: #fff; font-size: .7rem; font-weight: 700; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 4px; flex-shrink: 0; }
+.ranking-list li:nth-child(1)::before { background: #ffd54f; color: #5d4800; }
+.ranking-list li:nth-child(2)::before { background: #b0bec5; color: #333; }
+.ranking-list li:nth-child(3)::before { background: #a1887f; color: #fff; }
+.cat-list { list-style: none; }
+.cat-list li { padding: 5px 0; border-bottom: 1px solid #eef2f8; font-size: .83rem; }
+.cat-list li:last-child { border-bottom: none; }
+.cat-list li a::before { content: "▸ "; color: #2f5fa7; }
+.policy-text { font-size: .73rem; color: #888; line-height: 1.6; }
+
+/* Footer */
+.footer { background: #1a3e6f; color: #8aaed4; text-align: center; padding: 16px; font-size: .75rem; margin-top: 20px; }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .container { grid-template-columns: 1fr; }
+  .header-nav { display: none; }
+  .cal-table { font-size: .78rem; }
+  .ticker-bar { font-size: .72rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <h1><span>matrix-ao</span> ゲームまとめ</h1>
+    <nav class="header-nav">
+      <a href="#">新着</a>
+      <a href="#">発売日</a>
+      <a href="#">セール</a>
+      <a href="#">ハード</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Breaking ticker -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <span class="badge-breaking">速報</span>任天堂、Switch後継機の詳細を7月発表へ ─ 日経報道
+    &emsp;│&emsp;
+    <span class="badge-breaking">速報</span>Steam サマーセール 6/26開始、過去最大規模か
+    &emsp;│&emsp;
+    <span class="badge-breaking">速報</span>『エルデンリング』DLC第2弾が正式発表 ─ 2026年冬予定
+    &emsp;│&emsp;
+    <span class="badge-breaking">速報</span>PS5 Pro 新カラー「コバルトブルー」7月発売決定
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Compliance banner -->
+  <div class="compliance-banner">
+    <span class="tag">転載なし</span>
+    <span class="tag">公式ソース要約</span>
+    <span class="tag tag-yellow">PR表記あり</span>
+    <span class="tag tag-red">YMYL注意</span>
+    <span>確認日: 2026-06-10 ｜ リスクバッジは各記事に表示</span>
+  </div>
+
+  <!-- Main column -->
+  <main>
+
+    <!-- Release calendar -->
+    <section class="release-calendar">
+      <h2 class="section-title">発売日カレンダー</h2>
+      <table class="cal-table">
+        <thead>
+          <tr><th>発売日</th><th>タイトル</th><th>対応機種</th></tr>
+        </thead>
+        <tbody>
+          <tr class="cal-month"><td colspan="3">2026年 7月</td></tr>
+          <tr>
+            <td>7/3</td>
+            <td>ドラゴンクエストXII 選ばれし運命の炎</td>
+            <td><span class="badge badge-ps5">PS5</span><span class="badge badge-switch">Switch</span><span class="badge badge-pc">PC</span></td>
+          </tr>
+          <tr>
+            <td>7/10</td>
+            <td>メトロイドプライム4: ビヨンド</td>
+            <td><span class="badge badge-switch">Switch</span></td>
+          </tr>
+          <tr>
+            <td>7/17</td>
+            <td>Fable (2026)</td>
+            <td><span class="badge badge-xbox">Xbox</span><span class="badge badge-pc">PC</span></td>
+          </tr>
+          <tr>
+            <td>7/24</td>
+            <td>グランツーリスモ8</td>
+            <td><span class="badge badge-ps5">PS5</span></td>
+          </tr>
+          <tr class="cal-month"><td colspan="3">2026年 8月</td></tr>
+          <tr>
+            <td>8/7</td>
+            <td>モンスターハンターワイルズ 大型DLC</td>
+            <td><span class="badge badge-ps5">PS5</span><span class="badge badge-xbox">Xbox</span><span class="badge badge-pc">PC</span></td>
+          </tr>
+          <tr>
+            <td>8/21</td>
+            <td>スプラトゥーン4</td>
+            <td><span class="badge badge-switch">Switch</span></td>
+          </tr>
+          <tr>
+            <td>8/28</td>
+            <td>Hollow Knight: Silksong</td>
+            <td><span class="badge badge-switch">Switch</span><span class="badge badge-pc">PC</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline">
+      <h2 class="section-title">ゲーム速報タイムライン</h2>
+      <div class="tl-item">
+        <span class="tl-time">14:32</span>
+        <span class="tl-cat cat-release">発売日</span>
+        <span>『ドラゴンクエストXII』予約特典の詳細が公開 ─ メタリックスライムフィギュア同梱版も</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">13:18</span>
+        <span class="tl-cat cat-update">更新</span>
+        <span>『FF7リバース』PC版 パッチ1.4 配信 ─ DLSS 4対応、フレーム生成改善</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">12:45</span>
+        <span class="tl-cat cat-sale">セール</span>
+        <span>PS Store「Days of Play」最大75%OFF ─ 6/18まで、対象2,000タイトル超</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">11:30</span>
+        <span class="tl-cat cat-event">イベント</span>
+        <span>東京ゲームショウ2026 出展社リスト第1弾公開 ─ 過去最多420社</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">10:55</span>
+        <span class="tl-cat cat-hw">周辺機器</span>
+        <span>ホリ、Switch向け新型プロコン発表 ─ ホールエフェクトスティック搭載で6,980円</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">09:40</span>
+        <span class="tl-cat cat-release">発売日</span>
+        <span>『ペルソナ3 リロード』追加DLC「Episode Aegis」本日配信開始</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">08:15</span>
+        <span class="tl-cat cat-update">更新</span>
+        <span>『原神』Ver.5.8 予告 ─ 新エリア「雲海諸島」と★5キャラ2体追加</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">07:00</span>
+        <span class="tl-cat cat-event">イベント</span>
+        <span>Xbox Games Showcase 2026 日本時間6/15 深夜2時配信 ─ 新作30本以上</span>
+      </div>
+    </section>
+
+    <!-- Article -->
+    <article class="article-card">
+      <h3>【まとめ】2026年夏のゲーム発売ラッシュ ─ 注目タイトル7選と各プラットフォーム動向</h3>
+      <div class="article-meta">
+        <span>2026/06/10 14:00</span>
+        <span>確認日: 2026-06-10</span>
+        <span class="risk-badge">リスク: 低</span>
+        <span>ソース: 公式プレスリリース</span>
+      </div>
+      <div class="article-body">
+        <p>2026年7月〜8月にかけて、大型タイトルが集中する「夏の発売ラッシュ」が到来する。『ドラゴンクエストXII』を筆頭に、Switch向け『メトロイドプライム4』、Xbox独占の新生『Fable』など各プラットフォームの看板タイトルが揃う。</p>
+        <p>特にPS5では『グランツーリスモ8』がPS5 Pro最適化を前面に打ち出し、Xbox陣営は『Fable』でGame Pass加入者増を狙う。Switch後継機発表前の最後の大型ラインナップとなる可能性もあり、任天堂の戦略にも注目が集まる。</p>
+        <p>インディーシーンでは長年待望の『Hollow Knight: Silksong』がついに8月発売予定。Steam Nextフェスでの体験版が好評を博しており、Day 1でGame Passにも対応予定。</p>
+      </div>
+      <div class="thread">
+        <h4>みんなの反応 (5件)</h4>
+        <div class="comment">
+          <div class="c-header"><span class="c-name">名無しのゲーマー</span> 2026/06/10 14:15 ID:abc12</div>
+          DQ12とメトロイド同じ月は財布が死ぬ
+        </div>
+        <div class="comment">
+          <div class="c-header"><span class="c-name">名無しのゲーマー</span> 2026/06/10 14:22 ID:def34</div>
+          Silksong本当に出るんか？何回延期したと思ってるんだ
+        </div>
+        <div class="comment">
+          <div class="c-header"><span class="c-name">名無しのゲーマー</span> 2026/06/10 14:30 ID:ghi56</div>
+          GT8のPS5 Pro対応はかなり気になる。レイトレ完全対応らしいし
+        </div>
+        <div class="comment">
+          <div class="c-header"><span class="c-name">名無しのゲーマー</span> 2026/06/10 14:38 ID:jkl78</div>
+          Switch後継機の発表タイミング次第ではメトロイドが縦マルチになる可能性もあるよな
+        </div>
+        <div class="comment">
+          <div class="c-header"><span class="c-name">名無しのゲーマー</span> 2026/06/10 14:45 ID:mno90</div>
+          モンハンDLCも8月だし、夏休みに有給使うしかない（社畜並感）
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-ad">
+      <div>
+        広告スペース<br>
+        <span>[PR] 広告が入ります</span>
+      </div>
+    </div>
+
+    <div class="sidebar-box">
+      <h3>人気ゲームランキング</h3>
+      <ol class="ranking-list">
+        <li>ドラゴンクエストXII</li>
+        <li>モンスターハンターワイルズ</li>
+        <li>エルデンリング DLC</li>
+        <li>FF7リバース PC版</li>
+        <li>スプラトゥーン4</li>
+      </ol>
+    </div>
+
+    <div class="sidebar-box">
+      <h3>カテゴリー</h3>
+      <ul class="cat-list">
+        <li><a href="#">RPG</a></li>
+        <li><a href="#">アクション</a></li>
+        <li><a href="#">インディー</a></li>
+        <li><a href="#">セール情報</a></li>
+        <li><a href="#">周辺機器</a></li>
+        <li><a href="#">イベント・配信</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-box">
+      <h3>サイトポリシー</h3>
+      <p class="policy-text">
+        当サイトは公式プレスリリース・公式SNSの要約のみを掲載しています。転載は一切行っておりません。各情報の確認日を明記し、リスクバッジで情報鮮度を可視化しています。YMYL（生活・金銭に関わる情報）は慎重に取り扱い、必ず公式ソースへのリンクを併記します。広告はPR表記を明示します。
+      </p>
+    </div>
+  </aside>
+
+</div>
+
+<footer class="footer">
+  &copy; 2026 matrix-ao ゲームまとめ ─ 公式ソース要約・転載なし ─ お問い合わせ: info@example.com
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>004c — anime/game matome</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f0f8;color:#222;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;font-size:15px;line-height:1.6}a{color:#7b2d9e;text-decoration:none}a:hover{text-decoration:underline}
+.topbar{background:linear-gradient(135deg,#6a1b9a,#8e24aa);color:#fff;border-bottom:3px solid #ffab00}.topbar .inner{max-width:1180px;margin:0 auto;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}.site-title{font-weight:800;font-size:23px}.site-sub{font-size:12px;color:#e1bee7}
+.nav{background:#fff;border-bottom:1px solid #d1c4e9}.nav .inner{max-width:1180px;margin:0 auto;display:flex;gap:2px;overflow:auto;padding:0 10px}.nav a{display:block;padding:9px 13px;color:#444;font-weight:700;font-size:13px;border-bottom:2px solid transparent}.nav a.active{border-bottom-color:#ffab00;color:#6a1b9a;background:#faf5ff}
+.wrap{max-width:1180px;margin:14px auto 40px;padding:0 10px;display:grid;grid-template-columns:1fr 300px;gap:14px}
+.card{background:#fff;border:1px solid #d1c4e9;margin-bottom:12px}
+.notice{background:#fff8e1;border:1px solid #ffe082;padding:9px 12px;font-size:13px;margin-bottom:12px;color:#6d4c00}.notice b{color:#d84315}
+/* サムネグリッド */
+.pickup h2{margin:0;padding:8px 12px;font-size:15px;background:linear-gradient(135deg,#6a1b9a,#8e24aa);color:#fff}.pickup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#d1c4e9}.thumb{background:#fff;padding:10px}.thumb .fakeimg{height:70px;background:linear-gradient(135deg,#ede7f6,#fff8e1);border:1px dashed #b39ddb;margin-bottom:6px;display:flex;align-items:center;justify-content:center;color:#9575cd;font-size:10px;text-align:center}.thumb b{font-size:12px;line-height:1.35;display:block}.thumb .tmeta{font-size:10px;color:#888;margin-top:3px}
+/* イベント・発売日帯 */
+.event-strip{background:#fff;border:1px solid #d1c4e9;margin-bottom:12px;padding:0}.event-strip h2{margin:0;padding:8px 12px;font-size:14px;background:#ffab00;color:#333;font-weight:800}.event-list{display:grid;gap:0}.ev-item{display:grid;grid-template-columns:80px 1fr auto;gap:8px;padding:8px 12px;border-bottom:1px solid #f0e6ff;align-items:center;font-size:13px}.ev-item:last-child{border-bottom:0}.ev-date{font-weight:800;color:#6a1b9a}.ev-type{font-size:10px;display:inline-block;padding:1px 5px;border-radius:2px;color:#fff;font-weight:700}.ev-anime{background:#9b27af}.ev-game{background:#2d8a2d}.ev-event{background:#e65100}.ev-badge{font-size:10px;color:#2d8a2d;border:1px solid #93c693;background:#f0fdf0;padding:1px 4px;border-radius:2px}
+.headline{background:linear-gradient(#fff,#faf5ff);border-bottom:1px solid #d1c4e9;padding:12px 14px}.headline h1{font-size:22px;line-height:1.3;margin:0;color:#4a148c}.meta{margin-top:5px;color:#888;font-size:12px}
+.badge{display:inline-block;font-size:10px;padding:2px 5px;border-radius:2px;font-weight:700;margin-right:3px}.badge-src{background:#ede7f6;color:#6a1b9a;border:1px solid #b39ddb}.badge-low{background:#eef8ee;color:#2d7a2d;border:1px solid #93c693}.badge-pr{background:#fff3e0;color:#b26a00;border:1px solid #e0b56a}
+.thread{padding:12px}.res{border-bottom:1px solid #f0e6ff;padding:8px 4px}.res:last-child{border-bottom:0}.res-head{font-size:12px;color:#6a1b9a;font-weight:700}.res-num{color:#888}.res-body{font-size:15px;margin-top:3px}.res-body strong{color:#d84315}.quote{margin:6px 0 0 12px;padding:6px 10px;border-left:3px solid #d1c4e9;background:#faf5ff;color:#666;font-size:13px}
+.official-card{border:2px solid #6a1b9a;background:#faf5ff;margin:12px;padding:10px}.official-card h3{margin:0 0 6px;color:#6a1b9a;font-size:14px}.official-card ul{margin:0;padding-left:16px;font-size:13px}.official-card li{margin:2px 0}
+.list-section h2{margin:0;padding:8px 12px;font-size:15px;background:#faf5ff;border-bottom:1px solid #d1c4e9}.article-list{padding:0}.list-item{display:grid;grid-template-columns:70px 1fr auto;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px dotted #d1c4e9;font-size:13px}.list-item:last-child{border-bottom:0}.date{font-size:11px;color:#888}.cat{font-size:10px;display:inline-block;padding:1px 4px;border-radius:2px;color:#fff;background:#9b27af;margin-top:2px}
+.side{display:grid;gap:12px;align-content:start}.sidebox{background:#fff;border:1px solid #d1c4e9}.sidebox h3{margin:0;padding:7px 10px;background:#6a1b9a;color:#fff;font-size:13px}.sidebox ul{list-style:none;margin:0;padding:6px 10px}.sidebox li{padding:5px 0;border-bottom:1px dotted #d1c4e9;font-size:12px}.sidebox li:last-child{border-bottom:0}
+.rank{counter-reset:r}.rank li{counter-increment:r;display:grid;grid-template-columns:22px 1fr;gap:5px}.rank li::before{content:counter(r);background:#ffab00;color:#333;font-weight:800;text-align:center;border-radius:2px;font-size:11px;line-height:20px}
+.ad{height:250px;background:repeating-linear-gradient(45deg,#faf5ff,#faf5ff 8px,#ede7f6 8px,#ede7f6 16px);display:flex;align-items:center;justify-content:center;color:#999;font-weight:700;border:1px dashed #b39ddb;font-size:13px}
+.policy{background:#faf5ff;border:1px solid #d1c4e9;padding:8px;font-size:11px;color:#666}
+.footer{max-width:1180px;margin:0 auto 30px;padding:12px 10px;color:#888;font-size:11px;border-top:1px solid #d1c4e9}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}.pickup-grid{grid-template-columns:repeat(2,1fr)}.side{order:2}.headline h1{font-size:19px}.list-item,.ev-item{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="inner"><div><div class="site-title">matrix-ao アニメ&ゲームまとめ</div><div class="site-sub">公式情報の要約とリンクだけを掲載 / 著作物画像の転載なし</div></div><div class="site-sub">RSS / ポリシー</div></div></header>
+<nav class="nav"><div class="inner"><a class="active">総合</a><a>今期アニメ</a><a>新作ゲーム</a><a>推し活</a><a>配信・サブスク</a><a>イベント</a><a>セール</a><a>ポリシー</a></div></nav>
+
+<div class="wrap">
+<main>
+<div class="notice"><b>著作権遵守:</b> 本サイトはアニメ・ゲームの公式情報を要約・リンクします。スクリーンショット・本文・画像の転載は行いません。サムネ枠はプレースホルダです。広告には<b>PR</b>表記。</div>
+
+<section class="event-strip"><h2>直近の発売日・配信日・イベント</h2><div class="event-list">
+<div class="ev-item"><span class="ev-date">06/15</span><span><span class="ev-type ev-anime">配信</span> 夏アニメ「○○」第1話配信開始（各プラットフォーム）</span><span class="ev-badge">low</span></div>
+<div class="ev-item"><span class="ev-date">06/20</span><span><span class="ev-type ev-game">発売</span> 新作RPG「△△」発売日 — PS5 / Switch / PC</span><span class="ev-badge">low</span></div>
+<div class="ev-item"><span class="ev-date">06/28</span><span><span class="ev-type ev-event">イベント</span> ○○フェス 2026 Summer（幕張メッセ）</span><span class="ev-badge">low</span></div>
+<div class="ev-item"><span class="ev-date">07/01</span><span><span class="ev-type ev-anime">配信</span> 劇場版「□□」サブスク配信解禁</span><span class="ev-badge">low</span></div>
+</div></section>
+
+<section class="card pickup"><h2>注目まとめ</h2><div class="pickup-grid">
+<a class="thumb"><div class="fakeimg">公式キービジュアル<br>（転載なし）</div><b>夏アニメ 配信対応表 2026</b><div class="tmeta">確認日: 06/09 <span class="badge badge-low">low</span></div></a>
+<a class="thumb"><div class="fakeimg">公式トレーラー<br>（リンクのみ）</div><b>新作RPG「△△」公式情報まとめ</b><div class="tmeta">確認日: 06/08 <span class="badge badge-low">low</span></div></a>
+<a class="thumb"><div class="fakeimg">イベント公式<br>（リンクのみ）</div><b>○○フェス 2026 チケット・物販情報</b><div class="tmeta">確認日: 06/07 <span class="badge badge-low">low</span></div></a>
+<a class="thumb"><div class="fakeimg">セール情報<br>（公式）</div><b>Steam サマーセール 2026 注目タイトル <span class="badge badge-pr">PR</span></b><div class="tmeta">確認日: 06/06 <span class="badge badge-low">low</span></div></a>
+</div></section>
+
+<article class="card">
+<div class="headline"><h1>【公式確認】2026年夏アニメの配信先を公式発表ベースで整理</h1><div class="meta"><span class="badge badge-src">公式ソース</span><span class="badge badge-low">low risk</span> カテゴリ: アニメ / 確認日: 2026-06-09</div></div>
+<div class="thread">
+<div class="res"><div class="res-head"><span class="res-num">1.</span> matrix-ao確認班 ★</div><div class="res-body">各配信サービスの公式発表をもとに一覧化。<strong>著作物画像・本文の転載はしていません。</strong></div></div>
+<div class="res"><div class="res-head"><span class="res-num">2.</span> 推し活メモ</div><div class="res-body">独占配信・先行配信の情報は公式サイトで最終確認を推奨。リンクは記事上部。</div></div>
+</div>
+<div class="official-card"><h3>公式確認ポイント</h3><ul><li>一次ソースURL表示 / 確認日明示</li><li>キービジュアル・スクショは転載せずプレースホルダ表示</li><li>YMYL/炎上系は自動公開しない</li><li>広告リンクには<span class="badge badge-pr">PR</span>表記</li></ul></div>
+</article>
+
+<section class="card list-section"><h2>新着まとめ</h2><div class="article-list">
+<a class="list-item"><span class="date">06/09<br><span class="cat">アニメ</span></span><span>夏アニメ 配信サービス別対応表</span><span class="badge badge-low">low</span></a>
+<a class="list-item"><span class="date">06/08<br><span class="cat" style="background:#2d8a2d">ゲーム</span></span><span>新作RPG「△△」公式トレーラー・スペック情報</span><span class="badge badge-low">low</span></a>
+<a class="list-item"><span class="date">06/07<br><span class="cat" style="background:#e65100">イベント</span></span><span>○○フェス 2026 出展情報まとめ</span><span class="badge badge-low">low</span></a>
+<a class="list-item"><span class="date">06/06<br><span class="cat" style="background:#c41d20">セール</span></span><span>Steam サマーセール注目タイトル <span class="badge badge-pr">PR</span></span><span class="badge badge-low">low</span></a>
+</div></section>
+</main>
+
+<aside class="side">
+<div class="sidebox"><h3>広告枠</h3><div class="ad">300×250<br>AD PLACEHOLDER<br><small>PR</small></div></div>
+<div class="sidebox"><h3>人気まとめ</h3><ul class="rank"><li><a>夏アニメ 配信対応表</a></li><li><a>新作RPG「△△」情報</a></li><li><a>○○フェス チケット情報</a></li><li><a>Steam サマーセール</a></li><li><a>推し活グッズ 公式通販まとめ</a></li></ul></div>
+<div class="sidebox"><h3>配信カレンダー</h3><ul><li>06/15 — 夏アニメ 配信開始</li><li>06/20 — 新作RPG 発売</li><li>06/28 — ○○フェス</li><li>07/01 — 劇場版 サブスク解禁</li></ul></div>
+<div class="sidebox"><h3>カテゴリ</h3><ul><li>今期アニメ</li><li>新作ゲーム</li><li>推し活・グッズ</li><li>イベント・ライブ</li><li>配信・サブスク</li></ul></div>
+<div class="policy">著作物画像・本文の転載なし。公式情報の要約とリンクのみ。広告にはPR表記。サムネ枠はプレースホルダ。</div>
+</aside>
+</div>
+<footer class="footer">matrix-ao アニメ&ゲームまとめ — 004c sketch. No copyrighted image/text reposts. Official-source summaries only.</footer>
+</body>
+</html>
