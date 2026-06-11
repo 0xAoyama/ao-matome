@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matrix-ao — 公式ソースだけを集めるニュースまとめ</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue: #1d4ed8;
+  --blue-dark: #1e3a8a;
+  --blue-bg: #eff6ff;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --green: #15803d;
+  --green-bg: #f0fdf4;
+  --amber: #b45309;
+  --amber-bg: #fffbeb;
+  --red: #b91c1c;
+  --red-bg: #fef2f2;
+  --radius: 10px;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; background: #fff; color: var(--ink); line-height: 1.7; }
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.inner { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+/* ===== Topbar: trust statement (002の信頼感) ===== */
+.topbar { background: var(--blue-dark); color: #dbeafe; font-size: 12px; padding: 6px 0; }
+.topbar .inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.topbar strong { color: #fff; font-weight: 700; }
+
+/* ===== Header ===== */
+.header { border-bottom: 1px solid var(--line); padding: 18px 0; background: #fff; position: sticky; top: 0; z-index: 10; }
+.header .inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.logo { font-size: 24px; font-weight: 900; letter-spacing: -.5px; color: var(--ink); }
+.logo span { color: var(--blue); }
+.logo small { display: block; font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .5px; }
+.header nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.header nav a { padding: 8px 14px; font-size: 14px; font-weight: 600; color: #374151; border-radius: 999px; }
+.header nav a:hover { background: var(--blue-bg); color: var(--blue); text-decoration: none; }
+.header nav a.active { background: var(--blue); color: #fff; }
+.rss-cta { display: inline-flex; align-items: center; gap: 6px; background: var(--blue); color: #fff !important; font-size: 13px; font-weight: 700; padding: 9px 18px; border-radius: 999px; }
+.rss-cta:hover { background: var(--blue-dark); text-decoration: none !important; }
+.rss-cta svg { flex-shrink: 0; }
+
+/* ===== Hero: 公式ソースのみ宣言 + ステータス ===== */
+.hero { background: linear-gradient(180deg, var(--blue-bg) 0%, #fff 100%); border-bottom: 1px solid var(--line); padding: 40px 0 32px; }
+.hero h1 { font-size: 30px; line-height: 1.4; letter-spacing: -.5px; max-width: 720px; }
+.hero h1 em { font-style: normal; color: var(--blue); }
+.hero .lede { color: var(--muted); font-size: 15px; margin-top: 10px; max-width: 640px; }
+.hero-badges { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; border: 1px solid; }
+.pill-green { color: var(--green); background: var(--green-bg); border-color: #bbf7d0; }
+.pill-blue { color: var(--blue); background: var(--blue-bg); border-color: #bfdbfe; }
+
+/* Status counters */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+.stat { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+.stat .num { font-size: 26px; font-weight: 900; letter-spacing: -1px; color: var(--blue-dark); }
+.stat .num small { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: 0; }
+.stat .label { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+/* ===== Verified / Risk gate panel (001のverified/risk UI) ===== */
+.gate { margin-top: 28px; border: 1px solid #bfdbfe; border-radius: var(--radius); overflow: hidden; }
+.gate-head { background: var(--blue-bg); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.gate-head h2 { font-size: 14px; color: var(--blue-dark); display: flex; align-items: center; gap: 8px; }
+.gate-head .gate-note { font-size: 12px; color: var(--muted); }
+.gate-body { display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; }
+.gate-col { padding: 16px 18px; border-right: 1px solid var(--line); font-size: 13px; }
+.gate-col:last-child { border-right: none; }
+.gate-col h3 { font-size: 12px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.gate-col p { color: var(--muted); font-size: 12px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot-green { background: #22c55e; box-shadow: 0 0 0 3px #dcfce7; }
+.dot-amber { background: #f59e0b; box-shadow: 0 0 0 3px #fef3c7; }
+.dot-red { background: #ef4444; box-shadow: 0 0 0 3px #fee2e2; }
+.gate-verified h3 { color: var(--green); }
+.gate-review h3 { color: var(--amber); }
+.gate-blocked h3 { color: var(--red); }
+
+/* ===== Main layout ===== */
+.container { display: grid; grid-template-columns: 1fr 320px; gap: 28px; margin: 32px auto; max-width: 1180px; padding: 0 20px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 2px solid var(--blue); padding-bottom: 8px; margin-bottom: 16px; }
+.section-head h2 { font-size: 18px; color: var(--blue-dark); }
+.section-head a { font-size: 13px; font-weight: 600; }
+
+/* Category cards: AI / ゲーム / 美容・コンプレックス */
+.cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
+.cat-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; transition: border-color .15s, box-shadow .15s; }
+.cat-card:hover { border-color: var(--blue); box-shadow: 0 4px 14px rgba(29, 78, 216, .08); }
+.cat-card .cat-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; background: var(--blue-bg); color: var(--blue); font-weight: 900; font-size: 15px; }
+.cat-card h3 { font-size: 15px; margin-bottom: 4px; }
+.cat-card h3 a { color: var(--ink); }
+.cat-card p { font-size: 12px; color: var(--muted); }
+.cat-card .cat-count { font-size: 11px; font-weight: 700; color: var(--blue); margin-top: 8px; display: block; }
+.cat-card.ymyl .cat-ymyl { display: inline-block; margin-top: 8px; font-size: 10px; font-weight: 800; color: var(--amber); background: var(--amber-bg); border: 1px solid #fde68a; border-radius: 4px; padding: 1px 7px; }
+
+/* Latest articles list */
+.article-list { list-style: none; }
+.article-item { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.article-item:last-child { border-bottom: none; }
+.thumb { flex-shrink: 0; width: 96px; height: 68px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; letter-spacing: 1px; color: #fff; }
+.thumb-ai { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+.thumb-game { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+.thumb-beauty { background: linear-gradient(135deg, #db2777, #f472b6); }
+.article-main { flex: 1; min-width: 0; }
+.article-main h3 { font-size: 15px; line-height: 1.5; margin-bottom: 6px; }
+.article-main h3 a { color: var(--ink); }
+.article-main h3 a:hover { color: var(--blue); }
+.meta-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 11px; }
+.badge { font-weight: 800; padding: 1px 8px; border-radius: 4px; border: 1px solid; }
+.badge-source { color: var(--blue); background: var(--blue-bg); border-color: #bfdbfe; }
+.badge-checked { color: var(--green); background: var(--green-bg); border-color: #bbf7d0; }
+.badge-risk-low { color: var(--green); background: var(--green-bg); border-color: #bbf7d0; }
+.badge-risk-mid { color: var(--amber); background: var(--amber-bg); border-color: #fde68a; }
+.badge-pr { color: #6b21a8; background: #faf5ff; border-color: #e9d5ff; }
+.meta-time { color: var(--muted); }
+
+/* No-repost declaration */
+.no-repost { margin-top: 24px; background: var(--green-bg); border: 1px solid #bbf7d0; border-radius: var(--radius); padding: 16px 18px; font-size: 13px; }
+.no-repost h3 { font-size: 13px; color: var(--green); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.no-repost ul { list-style: none; color: #374151; font-size: 12px; }
+.no-repost li { padding: 2px 0; }
+.no-repost li::before { content: "✓ "; color: var(--green); font-weight: 900; }
+
+/* ===== Sidebar ===== */
+.sidebar .panel { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 18px; }
+.sidebar .panel h2 { font-size: 14px; color: var(--blue-dark); border-bottom: 2px solid var(--blue); padding-bottom: 6px; margin-bottom: 12px; }
+.ranking { list-style: none; counter-reset: rank; }
+.ranking li { counter-increment: rank; display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.5; align-items: flex-start; }
+.ranking li:last-child { border-bottom: none; }
+.ranking li::before { content: counter(rank); flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: var(--blue-bg); color: var(--blue); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.ranking li:nth-child(1)::before { background: var(--blue); color: #fff; }
+.ranking li:nth-child(2)::before { background: #60a5fa; color: #fff; }
+.ranking li:nth-child(3)::before { background: #93c5fd; color: #fff; }
+.ranking a { color: var(--ink); }
+.ranking a:hover { color: var(--blue); }
+.source-list { list-style: none; font-size: 13px; }
+.source-list li { display: flex; justify-content: space-between; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.source-list li:last-child { border-bottom: none; }
+.source-list .src-type { font-size: 10px; font-weight: 800; color: var(--blue); background: var(--blue-bg); border-radius: 4px; padding: 1px 7px; align-self: center; flex-shrink: 0; }
+.ad-panel .ad-label { display: inline-block; font-size: 10px; font-weight: 800; color: var(--muted); background: #f3f4f6; border: 1px solid var(--line); border-radius: 4px; padding: 1px 8px; margin-bottom: 8px; }
+.ad-box { border: 1px dashed #cbd5e1; border-radius: 8px; height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #94a3b8; font-size: 13px; background: #f8fafc; }
+.ad-box small { font-size: 11px; }
+.policy { font-size: 12px; color: #4b5563; }
+.policy p { margin-bottom: 8px; }
+.policy strong { color: var(--ink); }
+
+/* ===== Footer ===== */
+.footer { background: var(--blue-dark); color: #bfdbfe; padding: 28px 0; margin-top: 16px; font-size: 12px; }
+.footer .inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.footer a { color: #dbeafe; margin-right: 16px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 920px) {
+  .container { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .gate-body { grid-template-columns: 1fr; }
+  .gate-col { border-right: none; border-bottom: 1px solid var(--line); }
+  .gate-col:last-child { border-bottom: none; }
+  .cat-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar: 信頼ステートメント -->
+<div class="topbar">
+  <div class="inner">
+    <div><strong>公式ソースのみ</strong> — 一次情報(公式発表・プレスリリース・公式SNS)だけを要約して紹介します</div>
+    <div>本文・画像・SNS投稿の転載は一切行いません</div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <div class="inner">
+    <div class="logo">matrix-<span>ao</span><small>OFFICIAL SOURCE NEWS</small></div>
+    <nav>
+      <a class="active" href="#">トップ</a>
+      <a href="#cat-ai">AI</a>
+      <a href="#cat-game">ゲーム</a>
+      <a href="#cat-beauty">美容・コンプレックス</a>
+      <a href="#policy">運営ポリシー</a>
+    </nav>
+    <a class="rss-cta" href="#rss">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.18 17.82a2.18 2.18 0 1 1-4.36 0 2.18 2.18 0 0 1 4.36 0zM1.82 8.91v3.05c5.06 0 9.17 4.11 9.17 9.17h3.05c0-6.75-5.47-12.22-12.22-12.22zM1.82 2.82v3.05c7.78 0 14.1 6.32 14.1 14.1h3.05c0-9.47-7.68-17.15-17.15-17.15z"/></svg>
+      RSSで購読
+    </a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="inner">
+    <h1>公式ソース<em>だけ</em>を集めて、要点を日本語でまとめるニュースサイト</h1>
+    <p class="lede">AI・ゲーム・美容/コンプレックスの3分野について、公式発表・プレスリリース・一次情報のみを編集部が確認した上で要約します。匿名掲示板やSNSの転載は扱いません。</p>
+    <div class="hero-badges">
+      <span class="pill pill-green">✓ 全記事 一次ソースリンク付き</span>
+      <span class="pill pill-green">✓ 公開前に編集部チェック</span>
+      <span class="pill pill-blue">PR記事は明示します</span>
+    </div>
+
+    <!-- ステータスカウンタ -->
+    <div class="stats">
+      <div class="stat"><div class="num">128<small>本</small></div><div class="label">公開記事数</div></div>
+      <div class="stat"><div class="num">42<small>件</small></div><div class="label">監視中の公式ソース</div></div>
+      <div class="stat"><div class="num">0<small>件</small></div><div class="label">本文・画像・SNS転載</div></div>
+      <div class="stat"><div class="num">100<small>%</small></div><div class="label">公開前チェック実施率</div></div>
+    </div>
+
+    <!-- Verified / Risk gate パネル -->
+    <div class="gate">
+      <div class="gate-head">
+        <h2><span class="dot dot-green"></span>公開ゲート — すべての記事はこの3段階を通過します</h2>
+        <span class="gate-note">最終監査: 2026-06-12 / 編集部</span>
+      </div>
+      <div class="gate-body">
+        <div class="gate-col gate-verified">
+          <h3><span class="dot dot-green"></span>VERIFIED — 公開可</h3>
+          <p>一次ソースURLが確認でき、引用は要約のみ。権利物の転載なし。記事に source / checked 表記を付けて公開。</p>
+        </div>
+        <div class="gate-col gate-review">
+          <h3><span class="dot dot-amber"></span>RISK: REVIEW — 再確認</h3>
+          <p>YMYL(美容・健康・金銭)に該当、または情報源が公式SNSのみ。法務観点の再チェック後にのみ公開。</p>
+        </div>
+        <div class="gate-col gate-blocked">
+          <h3><span class="dot dot-red"></span>BLOCKED — 非公開</h3>
+          <p>一次ソース不明・転載が必要・個人攻撃や炎上目的に該当するもの。理由を記録して公開しない。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main -->
+<div class="container">
+  <main>
+    <!-- 3カテゴリ -->
+    <div class="section-head"><h2>カテゴリ</h2></div>
+    <div class="cat-grid">
+      <div class="cat-card" id="cat-ai">
+        <div class="cat-icon">AI</div>
+        <h3><a href="#">AI・テック</a></h3>
+        <p>モデル発表・料金改定・API変更を公式発表ベースで追跡。</p>
+        <span class="cat-count">62記事 / 監視ソース18件</span>
+      </div>
+      <div class="cat-card" id="cat-game">
+        <div class="cat-icon">GM</div>
+        <h3><a href="#">ゲーム</a></h3>
+        <p>新作発表・アップデート・公式生放送の要点を一次情報から。</p>
+        <span class="cat-count">41記事 / 監視ソース15件</span>
+      </div>
+      <div class="cat-card ymyl" id="cat-beauty">
+        <div class="cat-icon">BE</div>
+        <h3><a href="#">美容・コンプレックス</a></h3>
+        <p>公的機関・学会・メーカー公式の情報のみ。体験談や広告由来の効能主張は扱いません。</p>
+        <span class="cat-count">25記事 / 監視ソース9件</span>
+        <span class="cat-ymyl">YMYL — 全記事REVIEWゲート対象</span>
+      </div>
+    </div>
+
+    <!-- 最新記事一覧 -->
+    <div class="section-head"><h2>最新記事</h2><a href="#">すべて見る →</a></div>
+    <ul class="article-list">
+      <li class="article-item">
+        <div class="thumb thumb-ai">AI</div>
+        <div class="article-main">
+          <h3><a href="#">Anthropic、Claude新モデルを発表 — API料金と提供リージョンまとめ</a></h3>
+          <div class="meta-row">
+            <span class="badge badge-source">source: anthropic.com(公式発表)</span>
+            <span class="badge badge-risk-low">risk: low</span>
+            <span class="badge badge-checked">checked: 2026-06-12</span>
+            <span class="meta-time">3時間前</span>
+          </div>
+        </div>
+      </li>
+      <li class="article-item">
+        <div class="thumb thumb-game">GAME</div>
+        <div class="article-main">
+          <h3><a href="#">任天堂、夏季アップデート計画を公開 — 対象タイトルと配信日一覧</a></h3>
+          <div class="meta-row">
+            <span class="badge badge-source">source: nintendo.co.jp(プレスリリース)</span>
+            <span class="badge badge-risk-low">risk: low</span>
+            <span class="badge badge-checked">checked: 2026-06-12</span>
+            <span class="meta-time">6時間前</span>
+          </div>
+        </div>
+      </li>
+      <li class="article-item">
+        <div class="thumb thumb-beauty">BEAUTY</div>
+        <div class="article-main">
+          <h3><a href="#">消費者庁、ヘアケア製品の景品表示法措置命令を公表 — 対象表示の整理</a></h3>
+          <div class="meta-row">
+            <span class="badge badge-source">source: caa.go.jp(公的機関)</span>
+            <span class="badge badge-risk-mid">risk: review(YMYL)</span>
+            <span class="badge badge-checked">checked: 2026-06-11</span>
+            <span class="meta-time">昨日</span>
+          </div>
+        </div>
+      </li>
+      <li class="article-item">
+        <div class="thumb thumb-ai">AI</div>
+        <div class="article-main">
+          <h3><a href="#">主要LLM API料金 2026年6月版 — 各社公式ドキュメントから比較</a></h3>
+          <div class="meta-row">
+            <span class="badge badge-source">source: 各社公式docs(5件)</span>
+            <span class="badge badge-risk-low">risk: low</span>
+            <span class="badge badge-checked">checked: 2026-06-11</span>
+            <span class="meta-time">昨日</span>
+          </div>
+        </div>
+      </li>
+      <li class="article-item">
+        <div class="thumb thumb-game">GAME</div>
+        <div class="article-main">
+          <h3><a href="#">【PR】ゲーミングデバイスメーカーA社 新製品発表会レポート</a></h3>
+          <div class="meta-row">
+            <span class="badge badge-pr">PR — タイアップ記事</span>
+            <span class="badge badge-source">source: メーカー公式発表会</span>
+            <span class="badge badge-checked">checked: 2026-06-10</span>
+            <span class="meta-time">2日前</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- 転載ゼロ宣言 -->
+    <div class="no-repost">
+      <h3><span class="dot dot-green"></span>転載を行わないことの明記</h3>
+      <ul>
+        <li>記事本文の転載なし — すべて編集部による要約・再構成です</li>
+        <li>画像の転載なし — サムネイルはすべて自前生成(CSS/SVG)です</li>
+        <li>SNS投稿・掲示板書き込みの転載なし — 引用が必要な場合は一次ソースへのリンクのみ</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="panel">
+      <h2>人気記事ランキング</h2>
+      <ol class="ranking">
+        <li><a href="#">主要LLM API料金 2026年6月版 — 公式docs比較</a></li>
+        <li><a href="#">任天堂 夏季アップデート計画まとめ</a></li>
+        <li><a href="#">Claude新モデル発表 — 料金とリージョン</a></li>
+        <li><a href="#">消費者庁の措置命令を読み解く(YMYL)</a></li>
+        <li><a href="#">ゲーム業界 決算公式発表カレンダー</a></li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>監視中の公式ソース</h2>
+      <ul class="source-list">
+        <li>anthropic.com / news <span class="src-type">公式</span></li>
+        <li>nintendo.co.jp / プレス <span class="src-type">公式</span></li>
+        <li>caa.go.jp / 公表資料 <span class="src-type">公的</span></li>
+        <li>openai.com / blog <span class="src-type">公式</span></li>
+        <li>各社IR・決算資料 <span class="src-type">一次</span></li>
+      </ul>
+    </div>
+
+    <div class="panel ad-panel">
+      <span class="ad-label">広告 / SPONSORED</span>
+      <div class="ad-box">
+        広告枠 300×250
+        <small>PR表記必須・コンテンツと明確に分離</small>
+      </div>
+    </div>
+
+    <div class="panel" id="policy">
+      <h2>運営ポリシー</h2>
+      <div class="policy">
+        <p><strong>一次情報主義:</strong> 公式発表・プレスリリース・公的資料のみを情報源とし、全記事にソースURLを明記します。</p>
+        <p><strong>転載ゼロ:</strong> 本文・画像・SNS投稿の転載は行いません。要約と自前素材のみで構成します。</p>
+        <p><strong>公開ゲート:</strong> verified / review / blocked の3段階チェックを全記事に適用し、checked日付を表示します。</p>
+        <p><strong>広告の分離:</strong> タイアップ・アフィリエイトはすべてPR表記を付け、編集記事と区別します。</p>
+        <p><a href="#">ポリシー全文を読む →</a></p>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="inner">
+    <div>© 2026 matrix-ao — 公式ソースのみ・転載ゼロのニュースまとめ</div>
+    <div>
+      <a href="#">運営ポリシー</a><a href="#">お問い合わせ</a><a href="#">削除依頼</a><a href="#rss">RSS</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

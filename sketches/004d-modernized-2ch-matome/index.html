@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>004d — modernized 2ch matome</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f3f3;color:#222;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;font-size:15px;line-height:1.65}a{color:#0645ad;text-decoration:none}a:hover{text-decoration:underline}
+.topbar{background:#2f5fa7;color:#fff;border-bottom:4px solid #e7b800;border-radius:0 0 4px 4px}.topbar .inner{max-width:1180px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}.site-title{font-weight:800;font-size:24px;letter-spacing:-.02em}.site-sub{font-size:12px;color:#c8daf5}
+.nav{background:#fff;border-bottom:1px solid #ddd}.nav .inner{max-width:1180px;margin:0 auto;display:flex;gap:4px;overflow:auto;padding:4px 12px}.nav a{display:block;padding:8px 14px;color:#333;font-weight:700;font-size:13px;border-radius:4px}.nav a.active{background:#fff7cc;color:#9b6200}
+.wrap{max-width:1180px;margin:16px auto 40px;padding:0 12px;display:grid;grid-template-columns:1fr 300px;gap:16px}
+.card{background:#fff;border:1px solid #ddd;border-radius:6px;margin-bottom:14px;overflow:hidden}
+.notice{background:#fffbe6;border:1px solid #e3ca65;border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:13px}.notice b{color:#b40000}
+/* ピックアップ */
+.pickup h2{margin:0;padding:10px 14px;font-size:15px;background:#d71920;color:#fff;border-radius:6px 6px 0 0}.pickup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#eee}.thumb{background:#fff;padding:12px}.thumb .fakeimg{height:56px;background:linear-gradient(135deg,#e5edf8,#fff7cc);border:1px solid #ddd;border-radius:4px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:#888;font-size:11px}.thumb b{font-size:13px;line-height:1.35;display:block}
+.headline{background:linear-gradient(#fff,#fafafa);border-bottom:1px solid #ddd;padding:14px 16px}.headline h1{font-size:24px;line-height:1.3;margin:0;color:#111}.meta{margin-top:6px;color:#777;font-size:12px}
+.badge{display:inline-block;font-size:11px;padding:2px 6px;border-radius:4px;font-weight:700;margin-right:3px}.badge-src{background:#e6f0ff;color:#1a5ba5;border:1px solid #aac8ee}.badge-low{background:#eef8ee;color:#2d7a2d;border:1px solid #93c693}.badge-pr{background:#fff3e0;color:#b26a00;border:1px solid #e0b56a}
+.tabs{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid #eee;background:#fafafa;flex-wrap:wrap}.tab{padding:5px 10px;border:1px solid #ccc;background:#fff;border-radius:14px;font-size:12px;font-weight:700;color:#444}.tab.hot{background:#d71920;color:#fff;border-color:#b80f15;border-radius:14px}
+.thread{padding:16px}.res{border-bottom:1px solid #f0f0f0;padding:12px 4px}.res:last-child{border-bottom:0}.res-head{font-size:12px;color:#008000;font-weight:700}.res-num{color:#666}.res-body{font-size:15px;margin-top:5px;line-height:1.7}.res-body strong{color:#d71920}.quote{margin:8px 0 0 16px;padding:10px 12px;border-left:3px solid #ddd;background:#f8f8f8;color:#555;border-radius:0 4px 4px 0}
+.official-card{border:2px solid #2f5fa7;background:#f7fbff;margin:16px;padding:14px;border-radius:6px}.official-card h3{margin:0 0 8px;color:#1d4e91;font-size:15px}.official-card ul{margin:0;padding-left:18px;font-size:14px}.official-card li{margin:3px 0}
+.list-section h2{margin:0;padding:10px 14px;font-size:16px;background:#fafafa;border-bottom:1px solid #eee}.article-list{padding:0}.list-item{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px dotted #ddd}.list-item:last-child{border-bottom:0}.date{font-size:12px;color:#888}.cat{font-size:10px;background:#2f5fa7;color:#fff;padding:2px 6px;border-radius:10px;display:inline-block;margin-top:2px}.title{font-weight:700;font-size:14px}.risk{font-size:11px;color:#2d7a2d;border:1px solid #93c693;background:#f0fdf0;padding:2px 6px;border-radius:10px}
+.side{display:grid;gap:14px;align-content:start}.sidebox{background:#fff;border:1px solid #ddd;border-radius:6px;overflow:hidden}.sidebox h3{margin:0;padding:8px 12px;background:#444;color:#fff;font-size:13px}.sidebox ul{list-style:none;margin:0;padding:8px 12px}.sidebox li{padding:7px 0;border-bottom:1px dotted #ddd;font-size:13px}.sidebox li:last-child{border-bottom:0}
+.rank{counter-reset:r}.rank li{counter-increment:r;display:grid;grid-template-columns:24px 1fr;gap:6px}.rank li::before{content:counter(r);background:#e7b800;color:#111;font-weight:800;text-align:center;border-radius:10px;font-size:12px;line-height:24px;width:24px;height:24px}
+.ad{height:250px;background:repeating-linear-gradient(45deg,#fafafa,#fafafa 8px,#f0f0f0 8px,#f0f0f0 16px);display:flex;align-items:center;justify-content:center;color:#999;font-weight:700;border:1px dashed #bbb;border-radius:4px}
+.policy{background:#f8f8f8;border:1px solid #ddd;border-radius:6px;padding:10px;font-size:12px;color:#666}
+.footer{max-width:1180px;margin:0 auto 30px;padding:14px 12px;color:#777;font-size:12px;border-top:1px solid #ddd}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}.pickup-grid{grid-template-columns:1fr}.side{order:2}.headline h1{font-size:20px}.list-item{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="inner"><div><div class="site-title">matrix-ao まとめ速報</div><div class="site-sub">公式情報・確認日・低リスク記事だけをまとめる実験メディア</div></div><div class="site-sub">RSS / sitemap / ポリシー</div></div></header>
+<nav class="nav"><div class="inner"><a class="active">総合</a><a>アニメ</a><a>ゲーム</a><a>生成AI</a><a>生活防衛</a><a>セール</a><a>ランキング</a><a>運営ポリシー</a></div></nav>
+
+<div class="wrap">
+<main>
+<div class="notice"><b>注意:</b> 掲示板レス転載風の見た目ですが、本文・画像転載は行いません。公式発表の要約とリンクのみ掲載。広告リンクには<span class="badge badge-pr">PR</span>表記。</div>
+
+<section class="card pickup"><h2>本日の注目まとめ</h2><div class="pickup-grid">
+<a class="thumb"><div class="fakeimg">公式ソース</div><b>Claude Opus 4 / Sonnet 4 リリース — 変更点まとめ</b></a>
+<a class="thumb"><div class="fakeimg">予定表</div><b>2026年夏アニメ 配信サービス別対応表</b></a>
+<a class="thumb"><div class="fakeimg">セール</div><b>Amazon プライムデー 2026 日程ガイド</b></a>
+</div></section>
+
+<article class="card">
+<div class="headline"><h1>【公式確認】2026年夏アニメの配信先、そろそろ整理しておきたい件</h1><div class="meta"><span class="badge badge-src">公式ソース</span><span class="badge badge-low">low risk</span> カテゴリ: アニメ / 確認日: 2026-06-09</div></div>
+<div class="tabs"><span class="tab hot">速報</span><span class="tab">公式リンクあり</span><span class="tab">確認日あり</span><span class="tab">転載なし</span></div>
+<div class="thread">
+<div class="res"><div class="res-head"><span class="res-num">1.</span> matrix-ao確認班 ★</div><div class="res-body">夏アニメの配信先、公式発表ベースで一覧化しました。<strong>未確認の噂情報は入れていません。</strong></div></div>
+<div class="res"><div class="res-head"><span class="res-num">2.</span> 読者向けメモ</div><div class="res-body">見逃し防止なら「配信開始日」「独占配信」「無料期間」の3点だけ先に見るのがよさそう。</div></div>
+<div class="res"><div class="res-head"><span class="res-num">3.</span> matrix-ao確認班 ★</div><div class="res-body">更新が入り次第、確認日を変えて追記します。スクショ・本文転載はしません。</div><div class="quote">引用ではなく、公式リンクへの導線と要点整理に限定。</div></div>
+</div>
+<div class="official-card"><h3>公式確認ポイント</h3><ul><li>一次ソースURLを記事上部に表示</li><li>確認日・更新履歴を明示</li><li>YMYL/人物/炎上系は自動公開しない</li><li>広告リンクには<span class="badge badge-pr">PR</span>表記を明示</li></ul></div>
+</article>
+
+<section class="card list-section"><h2>新着まとめ</h2><div class="article-list">
+<a class="list-item"><span class="date">06/09<br><span class="cat">AI</span></span><span class="title">AIコードエディタ比較 2026年版</span><span class="risk">low</span></a>
+<a class="list-item"><span class="date">06/08<br><span class="cat">生活</span></span><span class="title">食品値上げまとめ、公式情報だけ整理</span><span class="risk">low</span></a>
+<a class="list-item"><span class="date">06/07<br><span class="cat">ゲーム</span></span><span class="title">2026年7月ゲーム発売日カレンダー</span><span class="risk">low</span></a>
+<a class="list-item"><span class="date">06/06<br><span class="cat">セール</span></span><span class="title">楽天スーパーSALE 注目まとめ <span class="badge badge-pr">PR</span></span><span class="risk">low</span></a>
+</div></section>
+</main>
+
+<aside class="side">
+<div class="sidebox"><h3>広告枠</h3><div class="ad">300×250<br>AD PLACEHOLDER<br><small>PR</small></div></div>
+<div class="sidebox"><h3>人気記事ランキング</h3><ul class="rank"><li><a>Claude Opus 4 / Sonnet 4 まとめ</a></li><li><a>夏アニメ 配信対応表</a></li><li><a>プライムデー 2026 日程</a></li><li><a>ふるさと納税 変更点</a></li><li><a>AIチャット比較表</a></li></ul></div>
+<div class="sidebox"><h3>カテゴリ</h3><ul><li>アニメ・推し活</li><li>生成AI・業務自動化</li><li>生活防衛・セール</li><li>公式ソース一覧</li></ul></div>
+<div class="policy">掲示板本文・画像・SNS投稿の転載なし。公式情報の要約とリンクに限定。広告にはPR表記。</div>
+</aside>
+</div>
+<footer class="footer">matrix-ao まとめ速報 — 004d modernized 2ch matome sketch. No body/image reposts. Official-source summaries only.</footer>
+</body>
+</html>

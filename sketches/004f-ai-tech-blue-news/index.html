@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matrix-ao AI・テックまとめ</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; background: #f0f2f5; color: #1a1a1a; line-height: 1.7; font-size: 15px; }
+a { color: #2f5fa7; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.header { background: linear-gradient(135deg, #1a3a6b, #2f5fa7); color: #fff; padding: 0; }
+.header-inner { max-width: 1180px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+.site-title { font-size: 22px; font-weight: 800; letter-spacing: .5px; }
+.site-title span { color: #a8c8ff; font-weight: 400; font-size: 13px; margin-left: 8px; }
+.header-nav { display: flex; gap: 18px; font-size: 13px; }
+.header-nav a { color: #ccd9f0; }
+.header-nav a:hover { color: #fff; text-decoration: none; }
+
+/* Breaking ticker */
+.ticker { background: #0d1b33; color: #fff; font-size: 13px; overflow: hidden; white-space: nowrap; padding: 6px 0; }
+.ticker-inner { display: inline-block; animation: ticker-scroll 30s linear infinite; }
+.ticker-label { background: #cc0000; color: #fff; font-weight: 700; padding: 2px 10px; border-radius: 3px; margin-right: 12px; font-size: 12px; }
+.ticker-item { margin-right: 40px; color: #b0c4e8; }
+.ticker-item time { color: #6688bb; margin-right: 6px; }
+@keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* Compliance bar */
+.compliance-bar { background: #e8edf4; border-bottom: 1px solid #c8d0e0; font-size: 11px; color: #556; }
+.compliance-bar-inner { max-width: 1180px; margin: 0 auto; padding: 5px 20px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.compliance-bar .badge { display: inline-block; padding: 1px 7px; border-radius: 3px; font-weight: 600; font-size: 10px; }
+.badge-source { background: #2f5fa7; color: #fff; }
+.badge-risk { background: #e8b800; color: #1a1a1a; }
+.badge-pr { background: #d45; color: #fff; }
+.badge-ymyl { background: #333; color: #fff; }
+
+/* Layout */
+.container { max-width: 1180px; margin: 0 auto; padding: 16px 20px; display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; margin-bottom: 16px; border-bottom: 2px solid #2f5fa7; }
+.tab { padding: 8px 18px; font-size: 13px; font-weight: 600; color: #556; cursor: pointer; border-radius: 6px 6px 0 0; background: #e4e8f0; border: 1px solid #c8d0e0; border-bottom: none; margin-bottom: -2px; }
+.tab.active { background: #2f5fa7; color: #fff; border-color: #2f5fa7; }
+
+/* Timeline */
+.timeline { background: #fff; border-radius: 8px; border: 1px solid #d0d8e8; }
+.timeline-header { padding: 12px 16px; font-size: 15px; font-weight: 700; border-bottom: 1px solid #e0e4ec; color: #1a3a6b; display: flex; align-items: center; gap: 8px; }
+.timeline-header .count { background: #2f5fa7; color: #fff; font-size: 11px; padding: 1px 8px; border-radius: 10px; }
+.tl-item { padding: 10px 16px; border-bottom: 1px solid #f0f2f5; display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+.tl-item:last-child { border-bottom: none; }
+.tl-item:hover { background: #f5f8fc; }
+.tl-time { color: #8899aa; font-size: 12px; min-width: 44px; padding-top: 2px; font-variant-numeric: tabular-nums; }
+.tl-badge { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px; white-space: nowrap; }
+.tl-badge-sokuho { background: #cc0000; color: #fff; }
+.tl-badge-llm { background: #1a3a6b; color: #fff; }
+.tl-badge-editor { background: #2a7d5f; color: #fff; }
+.tl-badge-api { background: #7b5ea7; color: #fff; }
+.tl-badge-cloud { background: #e8b800; color: #1a1a1a; }
+.tl-content { flex: 1; }
+.tl-title { font-weight: 600; color: #1a2a44; }
+.tl-meta { font-size: 11px; color: #8899aa; margin-top: 2px; }
+.tl-source { color: #2f5fa7; }
+
+/* Article card */
+.article-card { background: #fff; border-radius: 8px; border: 1px solid #d0d8e8; margin-top: 16px; }
+.article-card-header { padding: 14px 16px; border-bottom: 1px solid #e0e4ec; }
+.article-card-header h2 { font-size: 17px; color: #1a2a44; }
+.article-card-header .meta { font-size: 12px; color: #8899aa; margin-top: 4px; }
+.article-body { padding: 16px; font-size: 14px; line-height: 1.8; color: #333; }
+.article-body p { margin-bottom: 12px; }
+.article-body .check-date { font-size: 11px; color: #888; background: #f5f5f5; padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+.article-body .risk-badge { display: inline-block; background: #e8b800; color: #1a1a1a; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; margin-left: 6px; }
+.article-body .pr-label { display: inline-block; background: #d45; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; margin-right: 4px; }
+.article-body .ymyl-note { background: #fff8e0; border-left: 3px solid #e8b800; padding: 8px 12px; font-size: 12px; color: #665500; margin: 10px 0; border-radius: 0 4px 4px 0; }
+
+/* Comments */
+.comments { border-top: 1px solid #e0e4ec; padding: 14px 16px; }
+.comments h3 { font-size: 14px; color: #1a3a6b; margin-bottom: 10px; }
+.comment { background: #f5f8fc; border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; }
+.comment .comment-meta { font-size: 11px; color: #8899aa; margin-bottom: 4px; }
+.comment .comment-reply { margin-left: 20px; margin-top: 6px; border-left: 2px solid #2f5fa7; padding-left: 10px; background: #fff; border-radius: 4px; padding: 8px 10px; }
+
+/* Comparison table */
+.compare-section { background: #fff; border-radius: 8px; border: 1px solid #d0d8e8; margin-top: 16px; }
+.compare-section h2 { padding: 12px 16px; font-size: 15px; color: #1a3a6b; border-bottom: 1px solid #e0e4ec; }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.compare-table th { background: #1a3a6b; color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; font-size: 12px; }
+.compare-table td { padding: 8px 10px; border-bottom: 1px solid #f0f2f5; }
+.compare-table tr:hover td { background: #f5f8fc; }
+.compare-table .price { font-weight: 700; color: #1a3a6b; }
+
+/* Sidebar */
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+.side-box { background: #fff; border-radius: 8px; border: 1px solid #d0d8e8; }
+.side-box-header { padding: 10px 14px; font-size: 14px; font-weight: 700; color: #1a3a6b; border-bottom: 1px solid #e0e4ec; }
+.side-ad { background: #e8edf4; border-radius: 8px; padding: 30px 14px; text-align: center; font-size: 12px; color: #889; border: 1px dashed #b0b8cc; }
+.side-ad .pr-mark { font-size: 10px; color: #fff; background: #d45; padding: 1px 6px; border-radius: 3px; margin-bottom: 6px; display: inline-block; }
+.ranking-list { list-style: none; }
+.ranking-list li { padding: 8px 14px; border-bottom: 1px solid #f0f2f5; font-size: 13px; display: flex; gap: 8px; }
+.ranking-list li:last-child { border-bottom: none; }
+.ranking-num { font-weight: 800; color: #2f5fa7; min-width: 18px; }
+.ranking-list li:nth-child(-n+3) .ranking-num { color: #cc0000; }
+.cat-list { list-style: none; padding: 10px 14px; }
+.cat-list li { padding: 4px 0; }
+.cat-list li a { font-size: 13px; color: #333; }
+.cat-list li a:hover { color: #2f5fa7; }
+.cat-list .cat-count { font-size: 11px; color: #999; margin-left: 4px; }
+.policy-text { padding: 10px 14px; font-size: 11px; color: #888; line-height: 1.6; }
+
+/* Footer */
+.footer { background: #1a3a6b; color: #8899bb; text-align: center; padding: 20px; font-size: 11px; margin-top: 20px; }
+.footer a { color: #a8c8ff; }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .container { grid-template-columns: 1fr; }
+  .header-nav { display: none; }
+  .tabs { overflow-x: auto; }
+  .compare-table { font-size: 11px; }
+  .compare-table th, .compare-table td { padding: 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="site-title">matrix-ao AI・テックまとめ<span>by matrix-ao</span></div>
+    <nav class="header-nav">
+      <a href="#">ホーム</a>
+      <a href="#">LLM</a>
+      <a href="#">エディタ</a>
+      <a href="#">API</a>
+      <a href="#">クラウド</a>
+      <a href="#">料金比較</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Breaking ticker -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-label">速報</span>
+    <span class="ticker-item"><time>12:30</time>Claude Opus 4 正式リリース — Anthropic公式発表</span>
+    <span class="ticker-item"><time>11:45</time>GitHub Copilot、GPT-4.1ベースに切替完了</span>
+    <span class="ticker-item"><time>10:20</time>Cursor 1.0 正式版公開、エージェント機能強化</span>
+    <span class="ticker-item"><time>09:55</time>OpenAI API料金改定 — GPT-4oが30%値下げ</span>
+    <span class="ticker-item"><time>09:10</time>Google Gemini 2.5 Pro、コンテキスト2M対応</span>
+    <span class="ticker-label">速報</span>
+    <span class="ticker-item"><time>12:30</time>Claude Opus 4 正式リリース — Anthropic公式発表</span>
+    <span class="ticker-item"><time>11:45</time>GitHub Copilot、GPT-4.1ベースに切替完了</span>
+    <span class="ticker-item"><time>10:20</time>Cursor 1.0 正式版公開、エージェント機能強化</span>
+    <span class="ticker-item"><time>09:55</time>OpenAI API料金改定 — GPT-4oが30%値下げ</span>
+    <span class="ticker-item"><time>09:10</time>Google Gemini 2.5 Pro、コンテキスト2M対応</span>
+  </div>
+</div>
+
+<!-- Compliance bar -->
+<div class="compliance-bar">
+  <div class="compliance-bar-inner">
+    <span class="badge badge-source">公式ソース要約</span>
+    <span>当サイトは転載を行わず、公式発表・一次ソースの要約のみを掲載しています</span>
+    <span class="badge badge-risk">リスク情報あり</span>
+    <span class="badge badge-ymyl">YMYL注意</span>
+    <span>確認日: 2026-06-10</span>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="container">
+  <main>
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active">速報タイムライン</div>
+      <div class="tab">LLM</div>
+      <div class="tab">エディタ</div>
+      <div class="tab">API・料金</div>
+      <div class="tab">クラウド</div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <div class="timeline-header">AI・テック速報タイムライン <span class="count">本日 12件</span></div>
+
+      <div class="tl-item">
+        <span class="tl-time">12:30</span>
+        <span class="tl-badge tl-badge-sokuho">速報</span>
+        <div class="tl-content">
+          <div class="tl-title">Claude Opus 4 正式リリース — 1Mコンテキスト、コーディング性能が大幅向上</div>
+          <div class="tl-meta"><span class="tl-source">Anthropic公式ブログ</span> ・ 128コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">11:45</span>
+        <span class="tl-badge tl-badge-editor">エディタ</span>
+        <div class="tl-content">
+          <div class="tl-title">GitHub Copilot、GPT-4.1ベースモデルへ完全移行 — コード補完精度向上</div>
+          <div class="tl-meta"><span class="tl-source">GitHub Blog</span> ・ 67コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">10:20</span>
+        <span class="tl-badge tl-badge-editor">エディタ</span>
+        <div class="tl-content">
+          <div class="tl-title">Cursor 1.0 正式リリース — Background Agent、マルチファイル編集が安定版に</div>
+          <div class="tl-meta"><span class="tl-source">Cursor公式</span> ・ 89コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">09:55</span>
+        <span class="tl-badge tl-badge-api">API</span>
+        <div class="tl-content">
+          <div class="tl-title">OpenAI API料金改定 — GPT-4oが入力$1.25/出力$5.00に値下げ</div>
+          <div class="tl-meta"><span class="tl-source">OpenAI公式</span> ・ 201コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">09:10</span>
+        <span class="tl-badge tl-badge-llm">LLM</span>
+        <div class="tl-content">
+          <div class="tl-title">Google Gemini 2.5 Pro — コンテキストウィンドウ2M tokens対応</div>
+          <div class="tl-meta"><span class="tl-source">Google AI Blog</span> ・ 54コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">08:40</span>
+        <span class="tl-badge tl-badge-cloud">クラウド</span>
+        <div class="tl-content">
+          <div class="tl-title">AWS Bedrock、Claude Opus 4を即日サポート開始</div>
+          <div class="tl-meta"><span class="tl-source">AWS公式</span> ・ 32コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">08:15</span>
+        <span class="tl-badge tl-badge-llm">LLM</span>
+        <div class="tl-content">
+          <div class="tl-title">Meta Llama 4 Scout / Maverick ベンチマーク比較まとめ</div>
+          <div class="tl-meta"><span class="tl-source">各種ベンチマーク</span> ・ 44コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">07:30</span>
+        <span class="tl-badge tl-badge-api">API</span>
+        <div class="tl-content">
+          <div class="tl-title">Anthropic API、Extended Thinking時間制限を緩和 — 最大32K tokens</div>
+          <div class="tl-meta"><span class="tl-source">Anthropic Docs</span> ・ 28コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">06:50</span>
+        <span class="tl-badge tl-badge-editor">エディタ</span>
+        <div class="tl-content">
+          <div class="tl-title">Windsurf（旧Codeium）、月額$10プランでGPT-4o無制限提供へ</div>
+          <div class="tl-meta"><span class="tl-source">Windsurf公式</span> ・ 76コメント</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-time">06:10</span>
+        <span class="tl-badge tl-badge-llm">LLM</span>
+        <div class="tl-content">
+          <div class="tl-title">Claude Sonnet 4 vs GPT-4o — コーディングベンチマーク詳細比較</div>
+          <div class="tl-meta"><span class="tl-source">コミュニティ検証</span> ・ 112コメント</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article -->
+    <div class="article-card">
+      <div class="article-card-header">
+        <h2>Claude Opus 4 正式リリース — Anthropicが最上位モデルを刷新</h2>
+        <div class="meta">2026-06-10 12:30 更新 ・ ソース: Anthropic公式ブログ ・ 128コメント</div>
+      </div>
+      <div class="article-body">
+        <span class="check-date">確認日: 2026-06-10 / ソース: anthropic.com</span>
+        <span class="risk-badge">リスク: 料金変動あり</span>
+
+        <p>Anthropicは2026年6月10日、最上位モデル「Claude Opus 4」を正式リリースした。コンテキストウィンドウは1M tokens、SWE-bench Verifiedで72.5%のスコアを記録し、前世代Opus 3.5から大幅な性能向上を実現している。</p>
+
+        <p>API料金は入力$15/出力$75（1M tokensあたり）。Claude Proサブスクリプション（$20/月）でも利用可能だが、レート制限あり。</p>
+
+        <div class="ymyl-note">YMYL注意: 本記事にはAPI料金に関する情報が含まれます。最新の料金は必ず公式サイトをご確認ください。当サイトは公式発表の要約であり、転載ではありません。</div>
+
+        <p><span class="pr-label">PR</span>Claude Code CLI での利用が推奨されており、エージェント型コーディングの新しい標準になると公式は位置づけている。</p>
+      </div>
+
+      <div class="comments">
+        <h3>コメント（スレッド形式）</h3>
+        <div class="comment">
+          <div class="comment-meta">名無しのエンジニア 12:45</div>
+          Opus 4のコーディング性能やばい。SWE-benchで72.5%はぶっちぎり。
+          <div class="comment-reply">
+            <div class="comment-meta">名無しのエンジニア 12:52</div>
+            ただ料金も$15/$75だから個人開発者にはキツい。Sonnet 4で十分な場面も多そう。
+          </div>
+          <div class="comment-reply">
+            <div class="comment-meta">名無しのエンジニア 13:01</div>
+            Claude Pro $20/月で使えるならコスパは悪くないのでは？レート制限次第だけど。
+          </div>
+        </div>
+        <div class="comment">
+          <div class="comment-meta">名無しのエンジニア 13:10</div>
+          GPT-4oと比較するとコーディングは圧倒的だけど、日本語の自然さはまだGPTの方が上な気がする。用途次第。
+        </div>
+        <div class="comment">
+          <div class="comment-meta">名無しのエンジニア 13:25</div>
+          1Mコンテキストでようやくリポジトリまるごと読ませられるようになった。これでエージェント開発が捗る。
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="compare-section">
+      <h2>主要AIモデル 料金・性能比較（2026年6月時点）</h2>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>モデル</th>
+            <th>提供元</th>
+            <th>入力 / 1M tokens</th>
+            <th>出力 / 1M tokens</th>
+            <th>コンテキスト</th>
+            <th>SWE-bench</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Claude Opus 4</strong></td>
+            <td>Anthropic</td>
+            <td class="price">$15.00</td>
+            <td class="price">$75.00</td>
+            <td>1M</td>
+            <td>72.5%</td>
+          </tr>
+          <tr>
+            <td><strong>Claude Sonnet 4</strong></td>
+            <td>Anthropic</td>
+            <td class="price">$3.00</td>
+            <td class="price">$15.00</td>
+            <td>200K</td>
+            <td>65.2%</td>
+          </tr>
+          <tr>
+            <td><strong>GPT-4o</strong></td>
+            <td>OpenAI</td>
+            <td class="price">$1.25</td>
+            <td class="price">$5.00</td>
+            <td>128K</td>
+            <td>48.1%</td>
+          </tr>
+          <tr>
+            <td><strong>GPT-4.1</strong></td>
+            <td>OpenAI</td>
+            <td class="price">$2.00</td>
+            <td class="price">$8.00</td>
+            <td>1M</td>
+            <td>54.6%</td>
+          </tr>
+          <tr>
+            <td><strong>Gemini 2.5 Pro</strong></td>
+            <td>Google</td>
+            <td class="price">$1.25</td>
+            <td class="price">$10.00</td>
+            <td>2M</td>
+            <td>63.8%</td>
+          </tr>
+          <tr>
+            <td><strong>Llama 4 Maverick</strong></td>
+            <td>Meta (OSS)</td>
+            <td class="price">—</td>
+            <td class="price">—</td>
+            <td>1M</td>
+            <td>46.2%</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding: 8px 16px; font-size: 11px; color: #888;">
+        確認日: 2026-06-10 ・ 各社公式料金ページより。料金は変動する可能性があります。<span class="badge badge-ymyl" style="margin-left: 4px;">YMYL</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="side-ad">
+      <span class="pr-mark">PR</span><br>
+      広告枠（320x250）<br>
+      AI・テック関連広告
+    </div>
+
+    <div class="side-box">
+      <div class="side-box-header">テックニュース ランキング</div>
+      <ul class="ranking-list">
+        <li><span class="ranking-num">1</span>Claude Opus 4リリース — 性能まとめ</li>
+        <li><span class="ranking-num">2</span>OpenAI API値下げの影響を考察</li>
+        <li><span class="ranking-num">3</span>Cursor vs Copilot 2026年最新比較</li>
+        <li><span class="ranking-num">4</span>Gemini 2.5 Proの2Mコンテキスト検証</li>
+        <li><span class="ranking-num">5</span>AIエディタ料金プラン完全ガイド</li>
+        <li><span class="ranking-num">6</span>Llama 4をローカルで動かす方法</li>
+        <li><span class="ranking-num">7</span>Claude Code活用Tips 10選</li>
+      </ul>
+    </div>
+
+    <div class="side-box">
+      <div class="side-box-header">カテゴリ</div>
+      <ul class="cat-list">
+        <li><a href="#">LLM・大規模言語モデル <span class="cat-count">(234)</span></a></li>
+        <li><a href="#">コードエディタ・IDE <span class="cat-count">(128)</span></a></li>
+        <li><a href="#">API・料金 <span class="cat-count">(97)</span></a></li>
+        <li><a href="#">クラウド・インフラ <span class="cat-count">(84)</span></a></li>
+        <li><a href="#">オープンソース <span class="cat-count">(156)</span></a></li>
+        <li><a href="#">ベンチマーク・比較 <span class="cat-count">(63)</span></a></li>
+        <li><a href="#">開発ツール <span class="cat-count">(112)</span></a></li>
+        <li><a href="#">AI規制・ポリシー <span class="cat-count">(41)</span></a></li>
+      </ul>
+    </div>
+
+    <div class="side-box">
+      <div class="side-box-header">運営ポリシー</div>
+      <div class="policy-text">
+        当サイトは公式発表・一次ソースの要約を行い、転載は一切行いません。各記事には確認日・ソース元を明記しています。料金情報等（YMYL）は必ず公式をご確認ください。広告にはPR表記を付与しています。
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="footer">
+  &copy; 2026 matrix-ao AI・テックまとめ ・ <a href="#">プライバシーポリシー</a> ・ <a href="#">運営者情報</a> ・ <a href="#">お問い合わせ</a><br>
+  当サイトは転載を行わず、公式ソースの要約のみを掲載しています
+</footer>
+
+</body>
+</html>

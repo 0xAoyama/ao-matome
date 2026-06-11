@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matrix-ao 美容・ケアまとめ</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; background: #f4f6fa; color: #333; line-height: 1.7; }
+a { color: #2f5fa7; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.site-header { background: #2f5fa7; color: #fff; padding: 0; }
+.header-inner { max-width: 1180px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+.site-title { font-size: 20px; font-weight: 700; letter-spacing: .5px; }
+.site-title span { font-size: 12px; font-weight: 400; opacity: .8; margin-left: 8px; }
+.header-nav { display: flex; gap: 18px; font-size: 13px; }
+.header-nav a { color: #fff; opacity: .9; }
+.header-nav a:hover { opacity: 1; text-decoration: underline; }
+
+/* YMYL Disclaimer Banner */
+.ymyl-banner { background: #e8f5f0; border-bottom: 2px solid #2f5fa7; padding: 14px 20px; text-align: center; }
+.ymyl-banner-inner { max-width: 1180px; margin: 0 auto; font-size: 13px; color: #2f5fa7; line-height: 1.8; }
+.ymyl-banner-inner strong { display: inline-block; background: #2f5fa7; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+.ymyl-banner p { margin-top: 4px; }
+
+/* Layout */
+.container { max-width: 1180px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+
+/* Cards */
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.06); margin-bottom: 20px; overflow: hidden; }
+.card-header { background: #2f5fa7; color: #fff; padding: 10px 16px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.card-header .badge { background: rgba(255,255,255,.2); font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 400; }
+.card-body { padding: 16px; }
+
+/* Category tabs */
+.cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.cat-tab { display: inline-block; padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid #2f5fa7; color: #2f5fa7; background: #fff; }
+.cat-tab.active { background: #2f5fa7; color: #fff; }
+
+/* Timeline */
+.timeline { list-style: none; padding: 0; }
+.timeline li { position: relative; padding: 0 0 18px 22px; border-left: 2px solid #d0dced; }
+.timeline li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.timeline li::before { content: ""; position: absolute; left: -5px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #2f5fa7; }
+.tl-meta { font-size: 11px; color: #888; margin-bottom: 2px; }
+.tl-meta .risk { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; margin-left: 4px; }
+.risk-low { background: #e8f5f0; color: #2a8a5e; }
+.risk-mid { background: #fff5e0; color: #b8860b; }
+.risk-high { background: #fde8e8; color: #c0392b; }
+.tl-title { font-size: 14px; font-weight: 600; }
+.tl-title a { color: #2f5fa7; }
+.tl-source { font-size: 11px; color: #999; margin-top: 2px; }
+
+/* 料金比較テーブル */
+.price-table-wrap { overflow-x: auto; }
+.price-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.price-table thead { background: #2f5fa7; color: #fff; }
+.price-table th { padding: 8px 10px; font-weight: 600; text-align: left; white-space: nowrap; }
+.price-table td { padding: 8px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+.price-table tr:nth-child(even) { background: #faf7f2; }
+.price-table .confirmed { font-size: 11px; color: #888; display: block; }
+.price-table .note { font-size: 11px; color: #666; }
+.no-rank-notice { font-size: 11px; color: #2f5fa7; background: #e8f5f0; padding: 6px 10px; border-radius: 4px; margin-bottom: 10px; }
+
+/* Article / Thread */
+.article-block { border-top: 1px solid #eee; padding-top: 14px; margin-top: 14px; }
+.article-title { font-size: 16px; font-weight: 700; color: #222; margin-bottom: 6px; }
+.article-notice { font-size: 11px; color: #2f5fa7; background: #e8f5f0; padding: 6px 10px; border-radius: 4px; margin-bottom: 12px; }
+.thread-comment { background: #faf7f2; border-radius: 6px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; }
+.thread-comment .tc-id { font-weight: 700; color: #2f5fa7; font-size: 12px; }
+.thread-comment .tc-meta { font-size: 11px; color: #999; }
+.thread-comment .tc-body { margin-top: 4px; }
+
+/* Sidebar */
+.sidebar .card { font-size: 13px; }
+.sidebar .card-body ul { list-style: none; padding: 0; }
+.sidebar .card-body li { padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+.sidebar .card-body li:last-child { border-bottom: none; }
+
+.ad-box { background: #faf7f2; border: 1px dashed #ccc; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 20px; position: relative; }
+.ad-box .pr-label { position: absolute; top: 6px; right: 8px; font-size: 10px; background: #2f5fa7; color: #fff; padding: 1px 6px; border-radius: 3px; }
+.ad-box .ad-title { font-size: 14px; font-weight: 700; color: #2f5fa7; }
+.ad-box .ad-desc { font-size: 12px; color: #666; margin-top: 4px; }
+.ad-box .ad-link { display: inline-block; margin-top: 8px; padding: 6px 20px; background: #2f5fa7; color: #fff; border-radius: 20px; font-size: 12px; font-weight: 600; }
+
+.policy-box { font-size: 12px; color: #666; line-height: 1.8; }
+.policy-box h4 { font-size: 13px; color: #2f5fa7; margin-bottom: 4px; }
+.policy-box p { margin-bottom: 8px; }
+
+.confirmed-list { font-size: 12px; }
+.confirmed-list dt { font-weight: 600; color: #333; margin-top: 6px; }
+.confirmed-list dd { color: #888; margin-left: 0; }
+
+/* Footer */
+.site-footer { background: #2f5fa7; color: rgba(255,255,255,.8); text-align: center; padding: 18px; font-size: 12px; margin-top: 20px; }
+
+/* YMYL auto-publish notice */
+.auto-publish-notice { background: #fff5e0; border: 1px solid #e6c97a; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #8a6d00; margin-bottom: 20px; }
+
+/* Responsive */
+@media (max-width: 860px) {
+  .container { grid-template-columns: 1fr; }
+  .header-inner { flex-direction: column; gap: 8px; }
+  .header-nav { flex-wrap: wrap; justify-content: center; }
+  .price-table { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title">matrix-ao 美容・ケアまとめ <span>公式情報ベースの比較サイト</span></div>
+    <nav class="header-nav">
+      <a href="#">メンズ脱毛</a>
+      <a href="#">体臭ケア</a>
+      <a href="#">ホワイトニング</a>
+      <a href="#">スキンケア</a>
+      <a href="#">AGA</a>
+      <a href="#">運営ポリシー</a>
+    </nav>
+  </div>
+</header>
+
+<!-- YMYL Disclaimer Banner -->
+<div class="ymyl-banner">
+  <div class="ymyl-banner-inner">
+    <strong>重要事項</strong> 当サイトは医療行為・効果の断定はいたしません。掲載情報は各サービス公式サイトに基づく比較であり、効果・結果には個人差があります。ご利用の際は必ず専門家にご相談ください。
+    <p>掲載内容の確認日を各項目に明記しています。最新情報は必ず公式サイトでご確認ください。</p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Main Column -->
+  <main>
+
+    <!-- Auto-publish notice -->
+    <div class="auto-publish-notice">
+      YMYL（健康・美容）コンテンツのため、自動公開は無効化されています。すべての記事は公開前に事実確認・専門家レビューを経ています。
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="cat-tabs">
+      <span class="cat-tab active">すべて</span>
+      <span class="cat-tab">メンズ脱毛</span>
+      <span class="cat-tab">体臭ケア</span>
+      <span class="cat-tab">ホワイトニング</span>
+      <span class="cat-tab">スキンケア</span>
+      <span class="cat-tab">AGA</span>
+    </div>
+
+    <!-- Timeline -->
+    <div class="card">
+      <div class="card-header">公式情報タイムライン <span class="badge">公式情報ベース</span></div>
+      <div class="card-body">
+        <ul class="timeline">
+          <li>
+            <div class="tl-meta">2026-06-10 14:00 ／メンズ脱毛 <span class="risk risk-mid">リスク: 中</span></div>
+            <div class="tl-title"><a href="#">ゴリラクリニック、ヒゲ脱毛コース料金を改定（公式発表）</a></div>
+            <div class="tl-source">確認日: 2026-06-10 ／出典: ゴリラクリニック公式サイト</div>
+          </li>
+          <li>
+            <div class="tl-meta">2026-06-09 18:30 ／AGA <span class="risk risk-high">リスク: 高（医療）</span></div>
+            <div class="tl-title"><a href="#">AGAスキンクリニック、オンライン診療の対象エリア拡大を発表</a></div>
+            <div class="tl-source">確認日: 2026-06-09 ／出典: AGAスキンクリニック公式</div>
+          </li>
+          <li>
+            <div class="tl-meta">2026-06-09 10:00 ／体臭ケア <span class="risk risk-low">リスク: 低</span></div>
+            <div class="tl-title"><a href="#">NULL デオドラントジェル、新パッケージに切り替え</a></div>
+            <div class="tl-source">確認日: 2026-06-09 ／出典: NULL公式オンラインストア</div>
+          </li>
+          <li>
+            <div class="tl-meta">2026-06-08 12:00 ／ホワイトニング <span class="risk risk-mid">リスク: 中</span></div>
+            <div class="tl-title"><a href="#">スターホワイトニング、新宿院の料金プラン更新</a></div>
+            <div class="tl-source">確認日: 2026-06-08 ／出典: スターホワイトニング公式</div>
+          </li>
+          <li>
+            <div class="tl-meta">2026-06-07 09:00 ／スキンケア <span class="risk risk-low">リスク: 低</span></div>
+            <div class="tl-title"><a href="#">バルクオム、夏季限定セット販売開始</a></div>
+            <div class="tl-source">確認日: 2026-06-07 ／出典: BULK HOMME公式</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 料金比較テーブル: メンズ脱毛 -->
+    <div class="card">
+      <div class="card-header">メンズ脱毛クリニック 料金比較 <span class="badge">条件比較</span></div>
+      <div class="card-body">
+        <div class="no-rank-notice">※ 以下は公式サイトの料金情報を並列比較したものであり、順位付け・推奨ではありません。掲載順は五十音順です。</div>
+        <div class="price-table-wrap">
+          <table class="price-table">
+            <thead>
+              <tr><th>クリニック名</th><th>ヒゲ脱毛（税込）</th><th>対象部位</th><th>備考</th><th>確認日</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ゴリラクリニック</td>
+                <td>46,800円 / 6回<span class="confirmed">公式価格</span></td>
+                <td>鼻下・アゴ・アゴ下</td>
+                <td class="note">平日11-15時限定プランあり。麻酔別途</td>
+                <td>2026-06-10</td>
+              </tr>
+              <tr>
+                <td>湘南美容クリニック</td>
+                <td>16,800円 / 6回<span class="confirmed">公式価格</span></td>
+                <td>鼻下・アゴ・アゴ下</td>
+                <td class="note">全国展開。ポイント制度あり</td>
+                <td>2026-06-08</td>
+              </tr>
+              <tr>
+                <td>メンズリゼ</td>
+                <td>39,800円 / 5回<span class="confirmed">公式価格</span></td>
+                <td>鼻下・アゴ・アゴ下</td>
+                <td class="note">コース後1回半額。学割あり</td>
+                <td>2026-06-07</td>
+              </tr>
+              <tr>
+                <td>レジーナクリニック オム</td>
+                <td>44,600円 / 6回<span class="confirmed">公式価格</span></td>
+                <td>鼻下・アゴ・アゴ下</td>
+                <td class="note">麻酔無料。全身セット割あり</td>
+                <td>2026-06-06</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:11px; color:#888; margin-top:8px;">※ 価格・条件は確認日時点の公式サイト情報に基づきます。最新情報は各公式サイトでご確認ください。個人差・条件により実際の費用は異なります。</p>
+      </div>
+    </div>
+
+    <!-- Sample Article: メンズ脱毛 -->
+    <div class="card">
+      <div class="card-header">公式情報比較 <span class="badge">メンズ脱毛</span></div>
+      <div class="card-body">
+        <div class="article-title">メンズ脱毛クリニック4院の公式情報比較（2026年6月版）</div>
+        <div class="article-notice">本記事は各クリニック公式サイトの情報を比較したものであり、特定サービスの推奨ではありません。効果には個人差があり、医療脱毛にはリスクが伴います。施術を検討される際は医師にご相談ください。</div>
+        <p style="font-size:13px; margin-bottom:14px;">各クリニックの料金体系・プラン内容を公式情報に基づいて整理しました。上記の料金比較テーブルとあわせてご確認ください。なお、当サイトでは「おすすめ」「ランキング」といった表現は使用せず、条件の並列比較に徹しています。</p>
+
+        <div class="article-block">
+          <div style="font-size:13px; font-weight:700; margin-bottom:8px; color:#2f5fa7;">スレッド形式コメント</div>
+          <div class="thread-comment">
+            <span class="tc-id">1</span> <span class="tc-meta">名無し 2026-06-10 15:32</span>
+            <div class="tc-body">ゴリラクリニックの料金改定、前より安くなった？公式見たけど条件が複雑でわかりにくい</div>
+          </div>
+          <div class="thread-comment">
+            <span class="tc-id">2</span> <span class="tc-meta">名無し 2026-06-10 15:45</span>
+            <div class="tc-body">&gt;&gt;1 平日限定プランとの差があるから注意。ここの比較は公式ベースだから推奨じゃなくて条件比較な</div>
+          </div>
+          <div class="thread-comment">
+            <span class="tc-id">3</span> <span class="tc-meta">名無し 2026-06-10 16:01</span>
+            <div class="tc-body">湘南が安いのは事実だけど回数と部位の定義が微妙に違うから単純比較は危険。公式情報の比較であり推奨ではありません、ってスタンスは大事</div>
+          </div>
+          <div class="thread-comment">
+            <span class="tc-id">4</span> <span class="tc-meta">名無し 2026-06-10 16:20</span>
+            <div class="tc-body">結局カウンセリング行かないとわからんよな。個人差もあるし。このサイト順位つけてないのは好感持てる</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGA 料金比較 -->
+    <div class="card">
+      <div class="card-header">AGA治療 料金比較 <span class="badge">条件比較</span></div>
+      <div class="card-body">
+        <div class="no-rank-notice">※ 医療行為に関する情報です。治療の要否・方法は必ず医師にご相談ください。以下は推奨順ではなく五十音順です。</div>
+        <div class="price-table-wrap">
+          <table class="price-table">
+            <thead>
+              <tr><th>クリニック名</th><th>月額費用（税込）</th><th>治療内容</th><th>備考</th><th>確認日</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AGAスキンクリニック</td>
+                <td>3,700円〜<span class="confirmed">公式価格</span></td>
+                <td>フィナステリド処方</td>
+                <td class="note">初診料無料。オンライン診療対応</td>
+                <td>2026-06-09</td>
+              </tr>
+              <tr>
+                <td>クリニックフォア</td>
+                <td>1,760円〜<span class="confirmed">公式価格</span></td>
+                <td>フィナステリド処方</td>
+                <td class="note">定期配送割引あり。オンライン完結</td>
+                <td>2026-06-08</td>
+              </tr>
+              <tr>
+                <td>湘南美容クリニック</td>
+                <td>1,800円〜<span class="confirmed">公式価格</span></td>
+                <td>フィナステリド処方</td>
+                <td class="note">初回限定価格。対面診療</td>
+                <td>2026-06-07</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:11px; color:#888; margin-top:8px;">※ AGA治療は医療行為です。副作用のリスクがあります。必ず医師の診断を受けてください。</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <!-- AD with PR -->
+    <div class="ad-box">
+      <span class="pr-label">PR</span>
+      <div class="ad-title">メンズクリア 公式</div>
+      <div class="ad-desc">ヒゲ脱毛通い放題プラン<br>詳細は公式サイトへ</div>
+      <a href="#" class="ad-link">公式サイトを見る（PR）</a>
+    </div>
+
+    <!-- Categories -->
+    <div class="card">
+      <div class="card-header">カテゴリ</div>
+      <div class="card-body">
+        <ul>
+          <li><a href="#">メンズ脱毛</a>（料金比較 / 公式情報）</li>
+          <li><a href="#">体臭ケア</a>（製品比較 / 成分情報）</li>
+          <li><a href="#">ホワイトニング</a>（料金比較 / 施術情報）</li>
+          <li><a href="#">スキンケア</a>（製品比較 / 成分情報）</li>
+          <li><a href="#">AGA</a>（料金比較 / 治療情報）</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- AD 2 -->
+    <div class="ad-box">
+      <span class="pr-label">PR</span>
+      <div class="ad-title">バルクオム 公式</div>
+      <div class="ad-desc">メンズスキンケア定期コース<br>※効果には個人差があります</div>
+      <a href="#" class="ad-link">公式サイトを見る（PR）</a>
+    </div>
+
+    <!-- Policy (YMYL detailed) -->
+    <div class="card">
+      <div class="card-header">運営ポリシー（YMYL対応）</div>
+      <div class="card-body policy-box">
+        <h4>情報の正確性について</h4>
+        <p>当サイトの掲載情報は各サービス公式サイトの情報に基づいています。独自の取材・検証による効果の断定は行いません。</p>
+        <h4>医療情報の取り扱い</h4>
+        <p>医療行為（脱毛・AGA治療等）に関する情報は、公式サイト記載の事実のみを掲載します。治療効果・リスクについては必ず医師にご確認ください。</p>
+        <h4>広告・アフィリエイトについて</h4>
+        <p>当サイトはアフィリエイト広告を利用しています。広告にはすべて「PR」表記を付与しています。広告の有無が掲載内容・比較順序に影響することはありません。</p>
+        <h4>表現方針</h4>
+        <p>「おすすめ」「ランキング」「No.1」等の順位付け表現は使用しません。すべての比較は条件の並列提示です。</p>
+        <h4>更新・確認ポリシー</h4>
+        <p>各情報に確認日を明記しています。掲載から60日を超えた情報は再確認を行います。YMYL記事は自動公開を行わず、手動レビュー後に公開します。</p>
+      </div>
+    </div>
+
+    <!-- 確認日一覧 -->
+    <div class="card">
+      <div class="card-header">確認日一覧</div>
+      <div class="card-body">
+        <dl class="confirmed-list">
+          <dt>メンズ脱毛 料金比較</dt>
+          <dd>最終確認: 2026-06-10</dd>
+          <dt>AGA 料金比較</dt>
+          <dd>最終確認: 2026-06-09</dd>
+          <dt>体臭ケア 製品情報</dt>
+          <dd>最終確認: 2026-06-09</dd>
+          <dt>ホワイトニング 料金比較</dt>
+          <dd>最終確認: 2026-06-08</dd>
+          <dt>スキンケア 製品情報</dt>
+          <dd>最終確認: 2026-06-07</dd>
+        </dl>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<footer class="site-footer">
+  matrix-ao 美容・ケアまとめ ／ 公式情報ベースの条件比較サイト ／ 医療行為の推奨は行いません ／ &copy; 2026
+</footer>
+
+</body>
+</html>

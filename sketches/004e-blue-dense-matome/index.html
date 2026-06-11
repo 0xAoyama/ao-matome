@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>matrix-ao まとめNEWS</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; background: #f0f2f5; color: #222; line-height: 1.6; }
+a { color: #2f5fa7; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Topbar */
+.topbar { background: #1a1a1a; color: #aaa; font-size: 12px; padding: 4px 0; }
+.topbar .inner { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: flex; justify-content: space-between; }
+
+/* Header */
+.header { background: #2f5fa7; border-bottom: 4px solid #e7b800; padding: 12px 0; }
+.header .inner { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; }
+.header .logo { color: #fff; font-size: 22px; font-weight: 900; letter-spacing: .5px; }
+.header .logo span { color: #e7b800; }
+.header nav a { color: rgba(255,255,255,.85); margin-left: 20px; font-size: 14px; font-weight: 600; }
+.header nav a:hover { color: #fff; text-decoration: none; }
+
+/* Breaking ticker */
+.ticker-bar { background: #c0392b; color: #fff; font-size: 13px; overflow: hidden; white-space: nowrap; position: relative; height: 32px; line-height: 32px; }
+.ticker-label { background: #222; color: #e7b800; font-weight: 700; padding: 0 12px; display: inline-block; position: relative; z-index: 1; }
+.ticker-track { display: inline-block; animation: ticker 30s linear infinite; padding-left: 20px; }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* Nav tabs under header */
+.genre-nav { background: #fff; border-bottom: 1px solid #ddd; }
+.genre-nav .inner { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: flex; gap: 0; }
+.genre-nav a { padding: 10px 18px; font-size: 14px; font-weight: 600; color: #444; border-bottom: 3px solid transparent; }
+.genre-nav a:hover { color: #2f5fa7; text-decoration: none; }
+.genre-nav a.active { color: #2f5fa7; border-bottom-color: #2f5fa7; }
+
+/* Container */
+.container { max-width: 1180px; margin: 16px auto; padding: 0 16px; display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+
+/* Cards */
+.card { background: #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.08); padding: 16px; margin-bottom: 16px; }
+.card h2 { font-size: 16px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #2f5fa7; color: #2f5fa7; }
+
+/* Compliance notice */
+.compliance-notice { background: #eef3fb; border-left: 4px solid #2f5fa7; padding: 10px 14px; border-radius: 0 6px 6px 0; margin-bottom: 16px; font-size: 12px; color: #444; line-height: 1.7; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; margin-bottom: 12px; }
+.tabs button { background: #eee; border: none; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 6px 6px 0 0; color: #666; }
+.tabs button.active { background: #2f5fa7; color: #fff; }
+
+/* Timeline list */
+.timeline-list { list-style: none; }
+.timeline-list li { display: flex; align-items: baseline; gap: 8px; padding: 7px 0; border-bottom: 1px solid #eee; font-size: 13.5px; }
+.timeline-list li:last-child { border-bottom: none; }
+.tl-time { color: #888; font-size: 12px; min-width: 42px; flex-shrink: 0; }
+.tl-cat { font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 3px; flex-shrink: 0; }
+.cat-ai { background: #e3ecfa; color: #2f5fa7; }
+.cat-game { background: #fce4ec; color: #c0392b; }
+.cat-life { background: #e8f5e9; color: #2e7d32; }
+.tl-title { flex: 1; }
+.tl-title a { color: #222; }
+.tl-title a:hover { color: #2f5fa7; }
+.badge-risk { font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; flex-shrink: 0; }
+.risk-low { background: #e8f5e9; color: #388e3c; }
+.risk-medium { background: #fff3e0; color: #e65100; }
+.badge-breaking { background: #c0392b; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 700; margin-right: 4px; }
+.badge-ymyl { background: #fff3e0; color: #e65100; font-size: 10px; padding: 2px 6px; border-radius: 3px; font-weight: 700; }
+
+/* Pickup grid */
+.pickup-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 4px; }
+.pickup-item { background: #f7f9fc; border-radius: 6px; padding: 14px; border: 1px solid #e0e6ef; }
+.pickup-item .pickup-cat { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+.pickup-item h3 { font-size: 14px; margin-bottom: 6px; }
+.pickup-item h3 a { color: #222; }
+.pickup-item h3 a:hover { color: #2f5fa7; }
+.pickup-item .pickup-meta { font-size: 11px; color: #888; }
+
+/* Article sample */
+.article-header h1 { font-size: 20px; margin-bottom: 8px; }
+.article-meta { font-size: 12px; color: #888; margin-bottom: 12px; }
+.article-body { font-size: 14px; line-height: 1.85; margin-bottom: 16px; }
+.article-body p { margin-bottom: 10px; }
+.official-card { background: #f7f9fc; border: 1px solid #d0d8e8; border-radius: 6px; padding: 14px; margin-bottom: 16px; }
+.official-card .oc-label { font-size: 11px; color: #2f5fa7; font-weight: 700; margin-bottom: 4px; }
+.official-card a { font-weight: 600; }
+
+/* Comments */
+.comments h3 { font-size: 14px; margin-bottom: 10px; }
+.comment { padding: 10px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+.comment:last-child { border-bottom: none; }
+.comment .c-header { display: flex; gap: 8px; margin-bottom: 4px; font-size: 12px; color: #888; }
+.comment .c-name { font-weight: 700; color: #555; }
+.comment .c-body { color: #333; }
+
+/* Sidebar */
+.sidebar .card { padding: 14px; }
+.sidebar .card h2 { font-size: 14px; margin-bottom: 10px; padding-bottom: 6px; }
+.sidebar .ad-label { font-size: 10px; background: #e7b800; color: #333; padding: 1px 6px; border-radius: 3px; font-weight: 700; }
+.sidebar .ad-box { background: #f7f9fc; border: 1px dashed #ccc; border-radius: 6px; height: 250px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 13px; margin-top: 8px; }
+.ranking-list { list-style: none; counter-reset: rank; }
+.ranking-list li { counter-increment: rank; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; display: flex; gap: 8px; }
+.ranking-list li::before { content: counter(rank); background: #2f5fa7; color: #fff; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.ranking-list li:nth-child(1)::before { background: #e7b800; color: #333; }
+.ranking-list li:nth-child(2)::before { background: #8aa; }
+.ranking-list li:nth-child(3)::before { background: #b87333; color: #fff; }
+.cat-list { list-style: none; }
+.cat-list li { padding: 5px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+.cat-list li:last-child { border-bottom: none; }
+.policy-box { font-size: 11px; color: #888; line-height: 1.7; }
+.policy-box p { margin-bottom: 6px; }
+
+/* Footer */
+.footer { background: #1a1a1a; color: #888; text-align: center; padding: 20px 16px; margin-top: 24px; font-size: 12px; }
+.footer a { color: #aaa; }
+
+/* Mobile */
+@media (max-width: 860px) {
+  .container { grid-template-columns: 1fr; }
+  .pickup-grid { grid-template-columns: 1fr; }
+  .header .inner { flex-direction: column; gap: 8px; }
+  .header nav { display: flex; flex-wrap: wrap; gap: 8px; }
+  .header nav a { margin-left: 0; }
+  .genre-nav .inner { overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar"><div class="inner"><span>2026年6月10日(水) 14:32 更新</span><span>AI要約 / 公式ソースのみ</span></div></div>
+
+<!-- Header -->
+<div class="header"><div class="inner">
+  <div class="logo">matrix-ao <span>まとめNEWS</span></div>
+  <nav>
+    <a href="#">ホーム</a>
+    <a href="#">AI・テック</a>
+    <a href="#">ゲーム</a>
+    <a href="#">美容・生活</a>
+    <a href="#">このサイトについて</a>
+  </nav>
+</div></div>
+
+<!-- Breaking ticker -->
+<div class="ticker-bar">
+  <span class="ticker-label">速報</span>
+  <span class="ticker-track">
+    OpenAI、GPT-5を正式発表 マルチモーダル性能が大幅向上 &nbsp;|&nbsp;
+    任天堂、Switch後継機の詳細スペックを公開 &nbsp;|&nbsp;
+    厚労省、美容医療の広告規制を強化する方針を発表 &nbsp;|&nbsp;
+    Google DeepMind、新たなAIエージェント基盤を公開 &nbsp;|&nbsp;
+    OpenAI、GPT-5を正式発表 マルチモーダル性能が大幅向上 &nbsp;|&nbsp;
+    任天堂、Switch後継機の詳細スペックを公開 &nbsp;|&nbsp;
+    厚労省、美容医療の広告規制を強化する方針を発表 &nbsp;|&nbsp;
+    Google DeepMind、新たなAIエージェント基盤を公開 &nbsp;|&nbsp;
+  </span>
+</div>
+
+<!-- Genre nav -->
+<div class="genre-nav"><div class="inner">
+  <a href="#" class="active">総合</a>
+  <a href="#">AI・テック</a>
+  <a href="#">ゲーム</a>
+  <a href="#">美容・生活</a>
+  <a href="#">速報のみ</a>
+</div></div>
+
+<!-- Main container -->
+<div class="container">
+<main>
+
+<!-- Compliance notice -->
+<div class="compliance-notice">
+  当サイトは公式発表・一次ソースをAIで要約しています。<strong>本文・画像・SNS投稿の転載は行いません。</strong><br>
+  医療・美容(YMYL)カテゴリは自動公開せず、編集部確認後に掲載します。記事の確認日を各記事に表示しています。
+</div>
+
+<!-- Tabs + Timeline -->
+<div class="card">
+  <div class="tabs">
+    <button class="active">新着</button>
+    <button>速報</button>
+    <button>人気</button>
+  </div>
+  <ul class="timeline-list">
+    <li>
+      <span class="tl-time">14:20</span>
+      <span class="tl-cat cat-ai">AI</span>
+      <span class="badge-breaking">速報</span>
+      <span class="tl-title"><a href="#">OpenAI、GPT-5を正式発表 — マルチモーダル性能が大幅向上</a></span>
+      <span class="badge-risk risk-low">低リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">13:45</span>
+      <span class="tl-cat cat-game">ゲーム</span>
+      <span class="tl-title"><a href="#">任天堂、Switch後継機の詳細スペックを公開 — 発売は2026年秋</a></span>
+      <span class="badge-risk risk-low">低リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">13:10</span>
+      <span class="tl-cat cat-life">生活</span>
+      <span class="tl-title"><a href="#">厚労省、美容医療の広告規制強化を発表</a></span>
+      <span class="badge-risk risk-medium">中リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">12:30</span>
+      <span class="tl-cat cat-ai">AI</span>
+      <span class="tl-title"><a href="#">Google DeepMind、新AIエージェント基盤「Project Mariner」を公開</a></span>
+      <span class="badge-risk risk-low">低リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">11:55</span>
+      <span class="tl-cat cat-game">ゲーム</span>
+      <span class="tl-title"><a href="#">『エルデンリング』新DLC、累計販売1000万本突破</a></span>
+      <span class="badge-risk risk-low">低リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">11:20</span>
+      <span class="tl-cat cat-ai">AI</span>
+      <span class="tl-title"><a href="#">Anthropic、Claude新モデルを企業向けに先行提供開始</a></span>
+      <span class="badge-risk risk-low">低リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">10:40</span>
+      <span class="tl-cat cat-life">生活</span>
+      <span class="tl-title"><a href="#">2026年夏のUVケアトレンド — 皮膚科医が推す成分とは</a></span>
+      <span class="badge-risk risk-medium">中リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">09:50</span>
+      <span class="tl-cat cat-game">ゲーム</span>
+      <span class="tl-title"><a href="#">Steam夏セール開催日が正式決定 — 6月26日から</a></span>
+      <span class="badge-risk risk-low">低リスク</span>
+    </li>
+    <li>
+      <span class="tl-time">09:15</span>
+      <span class="tl-cat cat-ai">AI</span>
+      <span class="tl-title"><a href="#">EU、AI規制法の施行ガイドラインを公表 — 日本企業への影響は</a></span>
+      <span class="badge-risk risk-low">低リスク</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Pickup grid -->
+<div class="card">
+  <h2>ピックアップ</h2>
+  <div class="pickup-grid">
+    <div class="pickup-item">
+      <div class="pickup-cat cat-ai" style="display:inline-block; padding:1px 6px; border-radius:3px;">AI・テック</div>
+      <h3><a href="#">GPT-5の性能比較: GPT-4oとどこが違う?公式ベンチマークまとめ</a></h3>
+      <div class="pickup-meta">確認日: 2026-06-10 &nbsp; 低リスク</div>
+    </div>
+    <div class="pickup-item">
+      <div class="pickup-cat cat-game" style="display:inline-block; padding:1px 6px; border-radius:3px;">ゲーム</div>
+      <h3><a href="#">Switch後継機スペック完全比較 — 現行機との違いを図解</a></h3>
+      <div class="pickup-meta">確認日: 2026-06-10 &nbsp; 低リスク</div>
+    </div>
+    <div class="pickup-item">
+      <div class="pickup-cat cat-life" style="display:inline-block; padding:1px 6px; border-radius:3px;">美容・生活</div>
+      <h3><a href="#">美容医療の新広告規制、消費者が知っておくべきポイント</a></h3>
+      <div class="pickup-meta">確認日: 2026-06-10 &nbsp;<span class="badge-ymyl">YMYL</span> 中リスク</div>
+    </div>
+  </div>
+</div>
+
+<!-- Sample article -->
+<div class="card">
+  <div class="article-header">
+    <h1>OpenAI、GPT-5を正式発表 — マルチモーダル性能が大幅向上</h1>
+  </div>
+  <div class="article-meta">
+    <span class="tl-cat cat-ai" style="padding:2px 8px; border-radius:3px;">AI・テック</span> &nbsp;
+    <span class="badge-breaking">速報</span> &nbsp;
+    確認日: 2026-06-10 14:20 &nbsp;|&nbsp; ソース: OpenAI公式ブログ &nbsp;|&nbsp;
+    <span class="badge-risk risk-low">低リスク</span>
+  </div>
+  <div class="article-body">
+    <p>OpenAIは2026年6月10日、次世代大規模言語モデル「GPT-5」を正式に発表した。同社の公式ブログによると、GPT-5はテキスト・画像・音声・動画のマルチモーダル処理において前世代比で大幅な性能向上を実現している。</p>
+    <p>公式発表によれば、推論ベンチマークで従来モデル比35%の精度向上、応答速度も2倍に改善されたとしている。API料金は据え置きで、段階的にロールアウトされる予定。</p>
+    <p style="font-size:12px; color:#888;">※本記事はOpenAI公式ブログの発表内容をAIで要約したものです。本文・画像の転載は行っていません。</p>
+  </div>
+
+  <!-- Official card -->
+  <div class="official-card">
+    <div class="oc-label">公式ソース</div>
+    <a href="#">OpenAI公式ブログ: "Introducing GPT-5"</a>
+    <div style="font-size:12px; color:#888; margin-top:4px;">openai.com — 2026年6月10日公開</div>
+  </div>
+
+  <!-- Comments -->
+  <div class="comments">
+    <h3>みんなの反応 (3件)</h3>
+    <div class="comment">
+      <div class="c-header"><span class="c-name">名無しのテック民</span><span>14:25</span></div>
+      <div class="c-body">ベンチマーク35%向上はすごいけど、実際のユースケースでどれくらい変わるかだよな</div>
+    </div>
+    <div class="comment">
+      <div class="c-header"><span class="c-name">AI開発者A</span><span>14:28</span></div>
+      <div class="c-body">API料金据え置きは嬉しい。早くテストしたい</div>
+    </div>
+    <div class="comment">
+      <div class="c-header"><span class="c-name">名無しさん</span><span>14:31</span></div>
+      <div class="c-body">マルチモーダルの動画対応が気になる。公式のデモ動画あるのかな?</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+
+  <!-- Ad -->
+  <div class="card">
+    <h2>広告 <span class="ad-label">PR表記</span></h2>
+    <div class="ad-box">広告エリア (300x250)</div>
+  </div>
+
+  <!-- Ranking -->
+  <div class="card">
+    <h2>人気ランキング</h2>
+    <ol class="ranking-list">
+      <li><a href="#">GPT-5正式発表まとめ</a></li>
+      <li><a href="#">Switch後継機スペック比較</a></li>
+      <li><a href="#">美容医療の広告規制まとめ</a></li>
+      <li><a href="#">Steam夏セール注目タイトル</a></li>
+      <li><a href="#">EU AI規制法ガイドライン</a></li>
+    </ol>
+  </div>
+
+  <!-- Categories -->
+  <div class="card">
+    <h2>カテゴリ</h2>
+    <ul class="cat-list">
+      <li><span class="tl-cat cat-ai" style="padding:2px 6px; border-radius:3px;">AI・テック</span></li>
+      <li><span class="tl-cat cat-game" style="padding:2px 6px; border-radius:3px;">ゲーム</span></li>
+      <li><span class="tl-cat cat-life" style="padding:2px 6px; border-radius:3px;">美容・生活</span></li>
+    </ul>
+  </div>
+
+  <!-- Ad 2 -->
+  <div class="card">
+    <h2>おすすめ <span class="ad-label">PR表記</span></h2>
+    <div class="ad-box" style="height:150px;">広告エリア (300x150)</div>
+  </div>
+
+  <!-- Policy -->
+  <div class="card">
+    <h2>運営ポリシー</h2>
+    <div class="policy-box">
+      <p><strong>転載なし:</strong> 本文・画像・SNS投稿の転載は行いません。公式ソースの要約のみ掲載。</p>
+      <p><strong>確認日表示:</strong> 全記事に情報の確認日を表示しています。</p>
+      <p><strong>リスク表示:</strong> 各記事に情報リスク(低/中)を表示。</p>
+      <p><strong>YMYL方針:</strong> 医療・美容・金融系(YMYL)記事は自動公開せず、編集部確認後に掲載します。</p>
+      <p><strong>広告表記:</strong> 広告・PRリンクには必ずPR表記を付与。</p>
+    </div>
+  </div>
+
+</aside>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>&copy; 2026 matrix-ao まとめNEWS &nbsp;|&nbsp; <a href="#">利用規約</a> &nbsp;|&nbsp; <a href="#">プライバシーポリシー</a> &nbsp;|&nbsp; <a href="#">お問い合わせ</a></p>
+  <p style="margin-top:6px;">本サイトは公式ソースのAI要約です。本文・画像・SNS投稿の転載は行いません。</p>
+</div>
+
+</body>
+</html>
