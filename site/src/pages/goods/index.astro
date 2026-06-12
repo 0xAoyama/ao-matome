@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getGoods } from '../../lib/data';
+
+const goods = getGoods();
+---
+<Base title="グッズ予約・店舗別特典比較" description="アニメグッズ・フィギュア・Blu-rayの予約情報を店舗別の価格・特典つきで比較。締切順に掲載。">
+  <h1>グッズ予約・店舗別特典比較</h1>
+  <p class="meta">確認日: {goods.updated_at} / 予約締切が近い順に掲載しています。</p>
+
+  {goods.items.map(item => (
+    <a href={`/goods/${item.slug}/`} class="card">
+      <h3>{item.title}</h3>
+      <p class="meta" style="margin-top:0.3rem;">
+        <span class="badge deadline">締切 {item.deadline}</span>
+        <span class="badge ok">{item.status}</span>
+        {item.sample && <span class="badge sample">デモ</span>}
+        　{item.maker} / {item.release_date}発売予定 / {item.price}
+      </p>
+      <p style="font-size:0.9rem; margin-top:0.3rem;">{item.summary}</p>
+      <p class="meta" style="margin-top:0.3rem;">取扱: {item.stores.map(s => s.name).join(' / ')}</p>
+    </a>
+  ))}
+
+  <div class="disclaimer">
+    <strong>注記:</strong> 価格・特典・締切は確認日時点の公式情報に基づきます。変更される場合があるため、予約前に必ず各店舗の公式ページをご確認ください。
+    アフィリエイトリンクには「PR」を表記しています。
+  </div>
+</Base>

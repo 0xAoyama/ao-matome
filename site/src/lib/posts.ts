@@ -40,28 +40,25 @@ function parseFrontmatter(raw: string): { meta: Record<string, any>; content: st
 
 const contentBase = path.resolve(import.meta.dirname, '../../../content/sites');
 
-export function getPosts(category?: string): Post[] {
-  const categories = category ? [category] : ['anime', 'ai', 'life'];
+export function getPosts(category = 'news'): Post[] {
   const posts: Post[] = [];
-  for (const cat of categories) {
-    const dir = path.join(contentBase, cat, 'posts');
-    if (!fs.existsSync(dir)) continue;
-    for (const file of fs.readdirSync(dir)) {
-      if (!file.endsWith('.md')) continue;
-      const raw = fs.readFileSync(path.join(dir, file), 'utf-8');
-      const { meta, content } = parseFrontmatter(raw);
-      posts.push({
-        meta: meta as PostMeta,
-        content,
-        category: cat,
-        slug: meta.slug || file.replace(/\.md$/, ''),
-      });
-    }
+  const dir = path.join(contentBase, category, 'posts');
+  if (!fs.existsSync(dir)) return posts;
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.md')) continue;
+    const raw = fs.readFileSync(path.join(dir, file), 'utf-8');
+    const { meta, content } = parseFrontmatter(raw);
+    posts.push({
+      meta: meta as PostMeta,
+      content,
+      category,
+      slug: meta.slug || file.replace(/\.md$/, ''),
+    });
   }
   posts.sort((a, b) => b.meta.published_at.localeCompare(a.meta.published_at));
   return posts;
 }
 
-export function getPost(category: string, slug: string): Post | undefined {
+export function getPost(slug: string, category = 'news'): Post | undefined {
   return getPosts(category).find(p => p.slug === slug);
 }

@@ -5,13 +5,12 @@ import { getPosts } from '../../lib/posts';
 export function getStaticPaths() {
   const posts = getPosts();
   return posts.map(p => ({
-    params: { category: p.category, slug: p.slug },
+    params: { slug: p.slug },
     props: { post: p },
   }));
 }
 
 const { post } = Astro.props;
-const lines = post.content.trim().split('\n');
 // Simple markdown to HTML: headings, paragraphs, links, lists
 function md(text: string): string {
   return text
@@ -29,19 +28,25 @@ const html = md(post.content);
 <Base title={post.meta.title} description={post.meta.summary}>
   <article>
     <h1>{post.meta.title}</h1>
-    <p class="meta">
+    <p class="meta" style="margin-top:0.4rem;">
       {post.meta.published_at} —
-      <a href={post.meta.source_url}>{post.meta.source_name}</a>
-      {post.meta.ymyl && <span class="badge ymyl">YMYL</span>}
-      <span class="badge">{post.meta.risk_level}</span>
+      <a href={post.meta.source_url} rel="noopener" target="_blank">{post.meta.source_name}</a>
+      <span class="badge official">公式ソース</span>
     </p>
-    <p>{post.meta.summary}</p>
+    <p style="margin-top:0.6rem;">{post.meta.summary}</p>
     <Fragment set:html={html} />
+    <div class="card" style="margin-top:2rem; background:var(--c-accent-soft); border-color:var(--c-accent);">
+      <h3>あわせてチェック</h3>
+      <p style="font-size:0.92rem; margin-top:0.3rem;">
+        <a href="/streaming/">→ この作品はどこで見れる？配信サービス対応表</a><br/>
+        <a href="/goods/">→ 予約受付中のグッズ・店舗別特典比較</a>
+      </p>
+    </div>
     <div class="disclaimer">
       <strong>免責事項:</strong> 本記事は公式発表に基づく要約です。正確な情報は<a href={post.meta.source_url}>一次ソース</a>をご確認ください。
       画像や本文の転載は行っていません。<br/>
       <strong>確認日:</strong> {post.meta.checked_at}
     </div>
   </article>
-  <p style="margin-top:2rem;"><a href={`/${post.category}/`}>&larr; {post.category} 一覧に戻る</a></p>
+  <p style="margin-top:1.5rem;"><a href="/news/">&larr; ニュース一覧に戻る</a></p>
 </Base>
