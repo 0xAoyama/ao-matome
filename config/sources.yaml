@@ -1,41 +1,61 @@
-anime:
-  - name: dアニメストア
-    url: https://anime.dmkt-sp.jp/animestore/tp_pc
-    type: website
-  - name: ファミ通 発売日スケジュール
-    url: https://www.famitsu.com/schedule
-    type: website
+# アニメ・推し活バーティカル 監視ソース (genre-pivot v2: 2026-06-12)
+# news: ニュース・トレンド記事の収集元（集客エンジン）
+# streaming: 配信開始/終了の差分監視（マネーページ更新用）
+# goods: 予約開始・特典情報の監視（マネーページ更新用）
+
+news:
   - name: コラボカフェ
     url: https://collabo-cafe.com/feed/
     type: rss
   - name: 電撃オンライン
     url: https://dengekionline.com/feed/
     type: rss
+  - name: アニメ！アニメ！
+    url: https://animeanime.jp/rss/index.rdf
+    type: rss
+  - name: 4Gamer
+    url: https://www.4gamer.net/rss/index.xml
+    type: rss
+  - name: GAME Watch
+    url: https://game.watch.impress.co.jp/data/rss/1.0/gmw/feed.rdf
+    type: rss
+  - name: ファミ通 発売日スケジュール
+    url: https://www.famitsu.com/schedule
+    type: website
+  - name: PR TIMES（アニメ・ゲーム関連プレスリリース）
+    url: https://prtimes.jp/index.rdf
+    type: rss
+  - name: Google Trends 日本
+    url: https://trends.google.co.jp/trending/rss?geo=JP
+    type: rss
 
-ai:
-  - name: Anthropic News
-    url: https://www.anthropic.com/news
+streaming:
+  - name: dアニメストア
+    url: https://anime.dmkt-sp.jp/animestore/tp_pc
     type: website
-  - name: OpenAI Blog
-    url: https://openai.com/blog/rss.xml
-    type: rss
-  - name: Google AI Blog
-    url: https://blog.google/technology/ai/rss/
-    type: rss
-  - name: Hugging Face Blog
-    url: https://huggingface.co/blog/feed.xml
-    type: rss
+  - name: U-NEXT アニメ
+    url: https://video.unext.jp/
+    type: website
+  - name: DMM TV
+    url: https://tv.dmm.com/vod/
+    type: website
+  - name: ABEMA アニメ
+    url: https://abema.tv/video/genre/animation
+    type: website
+  - name: Prime Video
+    url: https://www.amazon.co.jp/gp/video/storefront
+    type: website
 
-life:
-  - name: 帝国データバンク
-    url: https://www.tdb.co.jp/report/
+goods:
+  - name: あみあみ 新着・予約
+    url: https://www.amiami.jp/top/page/new_item.html
     type: website
-  - name: 総務省 ふるさと納税
-    url: https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/
+  - name: アニメイト通販
+    url: https://www.animate-onlineshop.jp/
     type: website
-  - name: 総務省統計局 CPI
-    url: https://www.stat.go.jp/data/cpi/
+  - name: グッドスマイルカンパニー
+    url: https://www.goodsmile.com/ja
     type: website
-  - name: Amazon タイムセール
-    url: https://www.amazon.co.jp/gp/goldbox
+  - name: ホビーストック
+    url: https://hobbystock.jp/
     type: website

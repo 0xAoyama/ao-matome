@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getGoods } from '../../lib/data';
+import { storeLink } from '../../config/affiliates';
+
+export function getStaticPaths() {
+  const goods = getGoods();
+  return goods.items.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+---
+<Base title={`${item.title} 予約・店舗別特典比較`} description={`${item.title} の予約情報。店舗別の価格・特典・締切を比較（確認日: ${item.checked_at}）。`}>
+  <h1>{item.title}</h1>
+  <p class="meta" style="margin-top:0.3rem;">
+    <span class="badge deadline">予約締切 {item.deadline}</span>
+    <span class="badge ok">{item.status}</span>
+    {item.sample && <span class="badge sample">デモデータ</span>}
+  </p>
+  <p style="margin-top:0.6rem;">{item.summary}</p>
+
+  {item.sample && (
+    <p class="notice">このページはパイプライン稼働前の<strong>デモデータ</strong>です。実際の商品情報は公式ページでご確認ください。</p>
+  )}
+
+  <h2>商品情報</h2>
+  <div class="table-scroll">
+    <table class="cmp">
+      <tbody>
+        <tr><th>作品</th><td>{item.franchise}</td></tr>
+        <tr><th>メーカー</th><td>{item.maker}</td></tr>
+        <tr><th>参考価格</th><td>{item.price}</td></tr>
+        <tr><th>発売予定</th><td>{item.release_date}</td></tr>
+        <tr><th>予約締切</th><td><strong>{item.deadline}</strong>（店舗により異なる場合あり）</td></tr>
+        <tr><th>公式ページ</th><td><a href={item.official_url} rel="noopener" target="_blank">{item.official_url}</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>店舗別 価格・特典比較</h2>
+  <div class="table-scroll">
+    <table class="cmp">
+      <thead>
+        <tr><th>店舗</th><th>価格</th><th>特典</th><th></th></tr>
+      </thead>
+      <tbody>
+        {item.stores.map(store => {
+          const link = storeLink(store.id, store.url);
+          return (
+            <tr>
+              <td><strong>{store.name}</strong></td>
+              <td>{store.price}</td>
+              <td>{store.bonus}</td>
+              <td class="center">
+                <a href={link.url} class="cta" style="padding:0.3rem 0.9rem; font-size:0.82rem;" rel="nofollow sponsored noopener" target="_blank">予約ページ</a>
+                {link.isAffiliate && <span class="badge pr" style="margin-left:0.3rem;">PR</span>}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+  <p class="meta" style="margin-top:0.4rem;">店舗は五十音順ではなく取扱確認順です。在庫・特典は変動するため予約前に必ずリンク先でご確認ください。</p>
+
+  <div class="disclaimer">
+    <strong>免責事項:</strong> 本ページは各店舗・メーカーの公式情報に基づく比較です。商品画像の転載は行っていません。
+    価格・特典・締切は変更される場合があります。アフィリエイトリンクには「PR」を表記しています。<br/>
+    <strong>確認日:</strong> {item.checked_at}
+  </div>
+  <p style="margin-top:1.5rem;"><a href="/goods/">&larr; 予約・特典比較一覧に戻る</a></p>
+</Base>

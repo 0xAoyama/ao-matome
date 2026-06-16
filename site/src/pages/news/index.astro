@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/posts';
+const posts = getPosts();
+---
+<Base title="アニメ・推し活ニュース" description="アニメ・ゲーム・推し活の公式発表まとめ。予約開始、配信開始、イベント情報。">
+  <h1>ニュース</h1>
+  <p class="meta">公式発表のみを要約しています。本文・画像の転載はありません。</p>
+  {posts.map(p => (
+    <a href={`/news/${p.slug}/`} class="card" style="margin-top:1rem;">
+      <h3>{p.meta.title}</h3>
+      <p class="meta" style="margin-top:0.2rem;">{p.meta.published_at} — <span class="badge official">公式ソース</span> {p.meta.source_name}</p>
+      <p style="font-size:0.9rem; margin-top:0.3rem;">{p.meta.summary}</p>
+    </a>
+  ))}
+</Base>

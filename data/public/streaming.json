@@ -1,0 +1,116 @@
+{
+  "updated_at": "2026-06-12",
+  "note": "配信状況・料金・無料期間は確認日時点の情報です。sample=true の作品はパイプライン稼働前のデモデータであり、公開前に必ず各サービスで実際の配信状況を確認してください。",
+  "services": [
+    { "id": "danime", "name": "dアニメストア", "monthly": "550円", "trial": "初月無料", "strength": "アニメ特化・最安級" },
+    { "id": "unext", "name": "U-NEXT", "monthly": "2,189円", "trial": "31日間無料", "strength": "見放題本数最大級・毎月ポイント付与" },
+    { "id": "dmmtv", "name": "DMM TV", "monthly": "550円", "trial": "14日間無料", "strength": "新作アニメに強い・低価格" },
+    { "id": "primevideo", "name": "Prime Video", "monthly": "600円", "trial": "30日間無料", "strength": "Amazon配送特典つき" },
+    { "id": "abema", "name": "ABEMAプレミアム", "monthly": "1,080円", "trial": "あり（時期による）", "strength": "地上波同時・先行配信" },
+    { "id": "netflix", "name": "Netflix", "monthly": "890円〜", "trial": "なし", "strength": "独占配信作品" }
+  ],
+  "works": [
+    {
+      "slug": "sousou-no-frieren",
+      "title": "葬送のフリーレン",
+      "season": "TVシリーズ",
+      "checked_at": "2026-06-12",
+      "official_url": "https://frieren-anime.jp/",
+      "sample": true,
+      "summary": "魔王討伐後の世界を描くファンタジー。配信サービスでの取り扱いが広い作品。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "kusuriya-no-hitorigoto",
+      "title": "薬屋のひとりごと",
+      "season": "TVシリーズ",
+      "checked_at": "2026-06-12",
+      "official_url": "https://kusuriyanohitorigoto.jp/",
+      "sample": true,
+      "summary": "後宮を舞台にしたミステリー。シリーズ累計で配信需要が継続している作品。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "—"
+      }
+    },
+    {
+      "slug": "jujutsu-kaisen",
+      "title": "呪術廻戦",
+      "season": "TVシリーズ",
+      "checked_at": "2026-06-12",
+      "official_url": "https://jujutsukaisen.jp/",
+      "sample": true,
+      "summary": "呪いをめぐるダークファンタジー。劇場版含め配信網羅性の高い作品。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "spy-family",
+      "title": "SPY×FAMILY",
+      "season": "TVシリーズ",
+      "checked_at": "2026-06-12",
+      "official_url": "https://spy-family.net/",
+      "sample": true,
+      "summary": "スパイ×超能力者×殺し屋のホームコメディ。家族層にも配信需要が広い。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "oshi-no-ko",
+      "title": "【推しの子】",
+      "season": "TVシリーズ",
+      "checked_at": "2026-06-12",
+      "official_url": "https://ichigoproduction.com/",
+      "sample": true,
+      "summary": "芸能界を舞台にした転生サスペンス。推し活層と配信検索の親和性が高い作品。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "bocchi-the-rock",
+      "title": "ぼっち・ざ・ろっく！",
+      "season": "TVシリーズ",
+      "checked_at": "2026-06-12",
+      "official_url": "https://bocchi.rocks/",
+      "sample": true,
+      "summary": "陰キャ少女がバンドで成長する青春音楽アニメ。ロングテールで配信検索が続く作品。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "—",
+        "netflix": "—"
+      }
+    }
+  ]
+}

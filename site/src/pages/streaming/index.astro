@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getStreaming } from '../../lib/data';
+import { vodLink } from '../../config/affiliates';
+
+const streaming = getStreaming();
+---
+<Base title="アニメ配信どこで見れる？サービス対応表" description="アニメ作品ごとの配信サービス対応表。dアニメストア・U-NEXT・DMM TV・Prime Video・ABEMA・Netflixの見放題状況と料金・無料期間を比較。">
+  <h1>配信どこで見れる？対応表</h1>
+  <p class="meta">確認日: {streaming.updated_at} / 配信状況は変動します。リンク先で最新状況をご確認ください。</p>
+
+  <h2>作品×サービス対応表</h2>
+  <div class="table-scroll">
+    <table class="cmp">
+      <thead>
+        <tr>
+          <th>作品</th>
+          {streaming.services.map(s => <th class="center">{s.name}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {streaming.works.map(w => (
+          <tr>
+            <td><a href={`/streaming/${w.slug}/`}><strong>{w.title}</strong></a>{w.sample && <span class="badge sample" style="margin-left:0.4rem;">デモ</span>}</td>
+            {streaming.services.map(s => (
+              <td class="center">
+                {w.availability[s.id] === '見放題'
+                  ? <span class="avail">◎</span>
+                  : <span class="none">—</span>}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>配信サービス比較</h2>
+  <div class="table-scroll">
+    <table class="cmp">
+      <thead>
+        <tr><th>サービス</th><th>月額</th><th>無料期間</th><th>特徴</th><th></th></tr>
+      </thead>
+      <tbody>
+        {streaming.services.map(s => {
+          const link = vodLink(s.id);
+          return (
+            <tr>
+              <td><strong>{s.name}</strong></td>
+              <td>{s.monthly}</td>
+              <td>{s.trial}</td>
+              <td style="font-size:0.85rem;">{s.strength}</td>
+              <td class="center">
+                <a href={link.url} rel="nofollow sponsored noopener" target="_blank">公式サイト</a>
+                {link.isAffiliate && <span class="badge pr" style="margin-left:0.3rem;">PR</span>}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+  <p class="meta" style="margin-top:0.4rem;">料金・無料期間は確認日時点の情報です。キャンペーンにより変わる場合があります。</p>
+
+  <h2>作品別ページ</h2>
+  {streaming.works.map(w => (
+    <a href={`/streaming/${w.slug}/`} class="card">
+      <h3>{w.title} はどこで見れる？</h3>
+      <p class="meta" style="margin-top:0.2rem;">{w.season} / 確認日 {w.checked_at} {w.sample && <span class="badge sample">デモ</span>}</p>
+      <p style="font-size:0.9rem; margin-top:0.3rem;">{w.summary}</p>
+    </a>
+  ))}
+
+  <div class="disclaimer">
+    <strong>注記:</strong> 本ページは各配信サービスの公式情報をもとにした対応表です。本文・画像の転載は行っていません。
+    アフィリエイトリンクには「PR」を表記しています。
+  </div>
+</Base>

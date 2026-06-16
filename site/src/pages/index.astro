@@ -1,32 +1,76 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getPosts } from '../lib/posts';
+import { getStreaming, getGoods } from '../lib/data';
 
-const categories = [
-  { id: 'anime', name: 'Anime — アニメ・ゲーム・推し活', desc: '予約、配信、イベント、グッズ、特典比較' },
-  { id: 'ai', name: 'AI — 生成AIツール', desc: '公式更新、料金差分、使い方、比較表' },
-  { id: 'life', name: 'Life — 生活防衛', desc: '値上げ、セール、ポイント、ふるさと納税、税制変更' },
-];
-const recentPosts = getPosts().slice(0, 6);
+const streaming = getStreaming();
+const goods = getGoods();
+const posts = getPosts().slice(0, 8);
+const hasSample = streaming.works.some(w => w.sample) || goods.items.some(i => i.sample);
 ---
-<Base title="トップ" description="matrix-ao — アニメ・AI・生活防衛のまとめサイト">
-  <h1>matrix-ao</h1>
-  <p>アニメ・AI・生活防衛の公式情報をまとめるサイトです。</p>
+<Base title="アニメ配信どこで見れる？グッズ予約・特典比較" description="今期アニメの配信サービス対応表、グッズ予約の店舗別特典比較、推し活ニュースを公式情報だけでまとめる matrix-ao">
+  <section style="text-align:center; padding: 1.6rem 0 0.4rem;">
+    <h1>そのアニメ、<span style="color: var(--c-accent);">どこで見れる？</span></h1>
+    <p class="meta" style="font-size:0.95rem; margin-top:0.4rem;">配信サービス対応表と、グッズ予約の店舗別特典比較。公式情報だけを毎日更新。</p>
+    <p style="margin-top:1rem; display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
+      <a href="/streaming/" class="cta">配信対応表を見る</a>
+      <a href="/goods/" class="cta sub">予約・特典比較を見る</a>
+    </p>
+  </section>
 
-  <h2 style="margin-top:2rem;">カテゴリ</h2>
-  {categories.map(c => (
-    <a href={`/${c.id}/`} class="card" style="display:block;">
-      <h3>{c.name}</h3>
-      <p class="meta">{c.desc}</p>
+  {hasSample && (
+    <p class="notice">現在掲載中の対応表・比較表の一部はパイプライン稼働前の<strong>デモデータ</strong>です（<span class="badge sample">デモ</span>表示つき）。</p>
+  )}
+
+  <h2>配信サービス早見表</h2>
+  <p class="meta">作品名をタップすると料金・無料期間つきの詳細比較が見られます。（確認日: {streaming.updated_at}）</p>
+  <div class="table-scroll" style="margin-top:0.6rem;">
+    <table class="cmp">
+      <thead>
+        <tr>
+          <th>作品</th>
+          {streaming.services.map(s => <th class="center">{s.name}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {streaming.works.map(w => (
+          <tr>
+            <td><a href={`/streaming/${w.slug}/`}><strong>{w.title}</strong></a>{w.sample && <span class="badge sample" style="margin-left:0.4rem;">デモ</span>}</td>
+            {streaming.services.map(s => (
+              <td class="center">
+                {w.availability[s.id] === '見放題'
+                  ? <span class="avail">◎</span>
+                  : <span class="none">—</span>}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / —=配信なしまたは未確認。最新の配信状況は各サービス公式でご確認ください。</p>
+
+  <h2>締切が近い予約</h2>
+  {goods.items.map(item => (
+    <a href={`/goods/${item.slug}/`} class="card">
+      <h3>{item.title}</h3>
+      <p class="meta" style="margin-top:0.3rem;">
+        <span class="badge deadline">予約締切 {item.deadline}</span>
+        <span class="badge ok">{item.status}</span>
+        {item.sample && <span class="badge sample">デモ</span>}
+        　{item.maker} / {item.release_date}発売予定 / {item.price}
+      </p>
+      <p style="font-size:0.9rem; margin-top:0.3rem;">{item.summary}</p>
     </a>
   ))}
 
-  <h2 style="margin-top:2rem;">最新記事</h2>
-  {recentPosts.map(p => (
-    <a href={`/${p.category}/${p.slug}/`} class="card" style="display:block;">
+  <h2>新着ニュース</h2>
+  {posts.map(p => (
+    <a href={`/news/${p.slug}/`} class="card">
       <h3>{p.meta.title}</h3>
-      <p class="meta">{p.meta.published_at} — {p.meta.source_name}</p>
-      <p>{p.meta.summary}</p>
+      <p class="meta" style="margin-top:0.2rem;">{p.meta.published_at} — <span class="badge official">公式ソース</span> {p.meta.source_name}</p>
+      <p style="font-size:0.9rem; margin-top:0.3rem;">{p.meta.summary}</p>
     </a>
   ))}
+  <p><a href="/news/">ニュース一覧へ →</a></p>
 </Base>

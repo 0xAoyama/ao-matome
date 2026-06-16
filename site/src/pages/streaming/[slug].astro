@@ -1,0 +1,87 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getStreaming } from '../../lib/data';
+import { vodLink } from '../../config/affiliates';
+
+export function getStaticPaths() {
+  const streaming = getStreaming();
+  return streaming.works.map(w => ({
+    params: { slug: w.slug },
+    props: { work: w, services: streaming.services },
+  }));
+}
+
+const { work, services } = Astro.props;
+const watchable = services.filter(s => work.availability[s.id] === '見放題');
+---
+<Base title={`${work.title} はどこで見れる？配信サービス比較`} description={`${work.title} の配信サービス対応状況。見放題で視聴できるサービスの料金・無料期間を比較（確認日: ${work.checked_at}）。`}>
+  <h1>{work.title} はどこで見れる？</h1>
+  <p class="meta" style="margin-top:0.3rem;">
+    {work.season} / 確認日 {work.checked_at} / <a href={work.official_url} rel="noopener" target="_blank">アニメ公式サイト</a>
+    {work.sample && <span class="badge sample" style="margin-left:0.4rem;">デモデータ</span>}
+  </p>
+  <p style="margin-top:0.6rem;">{work.summary}</p>
+
+  {work.sample && (
+    <p class="notice">このページはパイプライン稼働前の<strong>デモデータ</strong>です。実際の配信状況は各サービスでご確認ください。</p>
+  )}
+
+  {watchable.length > 0 && (
+    <p style="margin-top:1rem;">
+      結論: <strong>{work.title}</strong> は
+      <strong style="color:var(--c-accent);">{watchable.map(s => s.name).join('・')}</strong>
+      で見放題配信中です（確認日時点）。
+    </p>
+  )}
+
+  <h2>配信サービス対応表</h2>
+  <div class="table-scroll">
+    <table class="cmp">
+      <thead>
+        <tr><th>サービス</th><th class="center">配信</th><th>月額</th><th>無料期間</th><th>特徴</th><th></th></tr>
+      </thead>
+      <tbody>
+        {services.map(s => {
+          const status = work.availability[s.id] ?? '—';
+          const link = vodLink(s.id);
+          const isAvail = status === '見放題';
+          return (
+            <tr>
+              <td><strong>{s.name}</strong></td>
+              <td class="center">{isAvail ? <span class="avail">◎ 見放題</span> : <span class="none">—</span>}</td>
+              <td>{s.monthly}</td>
+              <td>{s.trial}</td>
+              <td style="font-size:0.85rem;">{s.strength}</td>
+              <td class="center">
+                {isAvail && (
+                  <>
+                    <a href={link.url} class="cta" style="padding:0.3rem 0.9rem; font-size:0.82rem;" rel="nofollow sponsored noopener" target="_blank">今すぐ見る</a>
+                    {link.isAffiliate && <span class="badge pr" style="margin-left:0.3rem;">PR</span>}
+                  </>
+                )}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / —=配信なしまたは未確認。料金・無料期間は確認日時点の情報です。</p>
+
+  <h2>よくある質問</h2>
+  <div class="card">
+    <h3>無料で見る方法は？</h3>
+    <p style="font-size:0.92rem;">無料トライアル期間のあるサービス（{services.filter(s => s.trial !== 'なし' && work.availability[s.id] === '見放題').map(s => s.name).join('・') || 'なし'}）であれば、期間内は追加料金なしで視聴できます。トライアル条件は登録時に必ず公式ページでご確認ください。</p>
+  </div>
+  <div class="card">
+    <h3>配信が終了することはある？</h3>
+    <p style="font-size:0.92rem;">あります。配信ラインナップは各サービスの編成により変更されるため、本ページの確認日（{work.checked_at}）以降に状況が変わっている場合があります。</p>
+  </div>
+
+  <div class="disclaimer">
+    <strong>免責事項:</strong> 本ページは各配信サービスの公式情報に基づく要約です。本文・画像の転載は行っていません。
+    正確な配信状況は各サービスの公式ページをご確認ください。アフィリエイトリンクには「PR」を表記しています。<br/>
+    <strong>確認日:</strong> {work.checked_at}
+  </div>
+  <p style="margin-top:1.5rem;"><a href="/streaming/">&larr; 配信対応表一覧に戻る</a></p>
+</Base>
