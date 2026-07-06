@@ -26,7 +26,9 @@ const streaming = getStreaming();
               <td class="center">
                 {w.availability[s.id] === '見放題'
                   ? <span class="avail">◎</span>
-                  : <span class="none">—</span>}
+                  : w.availability[s.id] === 'レンタル'
+                    ? <span class="none">レンタル</span>
+                    : <span class="none">—</span>}
               </td>
             ))}
           </tr>
