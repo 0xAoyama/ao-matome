@@ -8,6 +8,10 @@ const goods = getGoods();
   <h1>グッズ予約・店舗別特典比較</h1>
   <p class="meta">確認日: {goods.updated_at} / 予約締切が近い順に掲載しています。</p>
 
+  {goods.items.length === 0 && (
+    <p class="notice">公式ソースで確認済みの予約商品は現在準備中です。未検証のデモ商品は掲載していません。</p>
+  )}
+
   {goods.items.map(item => (
     <a href={`/goods/${item.slug}/`} class="card">
       <h3>{item.title}</h3>

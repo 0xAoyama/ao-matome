@@ -1,23 +1,202 @@
 {
-  "updated_at": "2026-06-12",
-  "note": "配信状況・料金・無料期間は確認日時点の情報です。sample=true の作品はパイプライン稼働前のデモデータであり、公開前に必ず各サービスで実際の配信状況を確認してください。",
+  "updated_at": "2026-07-06",
+  "note": "配信状況・料金・無料期間は確認日時点の情報です。配信状況は変動するため、視聴前に各サービス公式ページで最新状況をご確認ください。",
   "services": [
-    { "id": "danime", "name": "dアニメストア", "monthly": "550円", "trial": "初月無料", "strength": "アニメ特化・最安級" },
-    { "id": "unext", "name": "U-NEXT", "monthly": "2,189円", "trial": "31日間無料", "strength": "見放題本数最大級・毎月ポイント付与" },
-    { "id": "dmmtv", "name": "DMM TV", "monthly": "550円", "trial": "14日間無料", "strength": "新作アニメに強い・低価格" },
-    { "id": "primevideo", "name": "Prime Video", "monthly": "600円", "trial": "30日間無料", "strength": "Amazon配送特典つき" },
-    { "id": "abema", "name": "ABEMAプレミアム", "monthly": "1,080円", "trial": "あり（時期による）", "strength": "地上波同時・先行配信" },
-    { "id": "netflix", "name": "Netflix", "monthly": "890円〜", "trial": "なし", "strength": "独占配信作品" }
+    {
+      "id": "danime",
+      "name": "dアニメストア",
+      "monthly": "550円",
+      "trial": "初月無料",
+      "strength": "アニメ特化・最安級"
+    },
+    {
+      "id": "unext",
+      "name": "U-NEXT",
+      "monthly": "2,189円",
+      "trial": "31日間無料",
+      "strength": "見放題本数最大級・毎月ポイント付与"
+    },
+    {
+      "id": "dmmtv",
+      "name": "DMM TV",
+      "monthly": "550円",
+      "trial": "14日間無料",
+      "strength": "新作アニメに強い・低価格"
+    },
+    {
+      "id": "primevideo",
+      "name": "Prime Video",
+      "monthly": "600円",
+      "trial": "30日間無料",
+      "strength": "Amazon配送特典つき"
+    },
+    {
+      "id": "abema",
+      "name": "ABEMAプレミアム",
+      "monthly": "1,080円",
+      "trial": "あり（時期による）",
+      "strength": "地上波同時・先行配信"
+    },
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "monthly": "890円〜",
+      "trial": "なし",
+      "strength": "独占配信作品"
+    }
   ],
   "works": [
     {
+      "slug": "bleach-tybw-kashintan",
+      "title": "BLEACH 千年血戦篇-禍進譚-",
+      "season": "2026年夏 / TVシリーズ（千年血戦篇 最終クール）",
+      "checked_at": "2026-07-06",
+      "official_url": "https://bleach-anime.com/",
+      "summary": "「BLEACH 千年血戦篇」の最終クールとなる新作TVアニメで、2026年7月25日よりテレ東系列ほかで放送開始予定。公式サイトのONAIRページにて、dアニメストア・U-NEXT・DMM TV・Prime Video・ABEMA・Netflixを含む多数のサービスで7月26日（日）12:00より毎週順次見放題配信されることが告知されている（7月6日時点では配信開始前）。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "ghost-in-the-shell",
+      "title": "攻殻機動隊 THE GHOST IN THE SHELL",
+      "season": "2026年夏 / TVシリーズ",
+      "checked_at": "2026-07-06",
+      "official_url": "https://www.theghostintheshell-anime.jp/",
+      "summary": "士郎正宗原作の新作TVアニメで、2026年7月7日よりカンテレ・フジテレビ系「火アニバル!!」枠で放送。Prime Videoで7月7日(火)23:30から国内見放題最速配信、dアニメストア・U-NEXT・DMM TV・ABEMA・Netflixなど各種サービスでは7月8日(水)23:30から見放題で順次配信と公式に発表されている（2026年7月6日時点では配信開始前）。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "mushoku-tensei-3",
+      "title": "無職転生Ⅲ ～異世界行ったら本気だす～",
+      "season": "2026年夏 / TVシリーズ第3期",
+      "checked_at": "2026-07-06",
+      "official_url": "https://mushokutensei.jp/",
+      "summary": "『無職転生Ⅲ ～異世界行ったら本気だす～』は2026年7月4日放送開始のTVアニメ第3期（正式表記は「無職転生Ⅲ」でナンバリング表記）。ABEMA・dアニメストアが地上波同時・最速配信を行い、U-NEXT・DMM TV・Prime Video・Netflixでも7月9日前後から順次見放題配信される（独占配信ではない）。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "nigewaka-2",
+      "title": "逃げ上手の若君 第2期",
+      "season": "2026年夏 / TVシリーズ（フジテレビ\"ノイタミナ\"）",
+      "checked_at": "2026-07-06",
+      "official_url": "https://nigewaka.run/",
+      "summary": "松井優征原作のTVアニメ第2期で、2026年7月17日よりフジテレビ\"ノイタミナ\"で放送開始予定。公式サイトの発表では、Prime Videoが7月17日24:00より見放題で先行配信、dアニメストア・U-NEXT・DMM TV・ABEMA・Netflix等は7月21日12:00より見放題配信予定であり、調査基準日の2026年7月6日時点ではいずれも配信開始前（配信ラインナップ発表済み）。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
+      "slug": "bandori-yumemita",
+      "title": "バンドリ！ ゆめ∞みた",
+      "season": "2026年夏 / TVシリーズ",
+      "checked_at": "2026-07-06",
+      "official_url": "https://anime.bang-dream.com/yumemita/",
+      "summary": "バーチャルガールズバンド「夢限大みゅーたいぷ」を主役とするバンドリ！シリーズの新作TVアニメで、2026年7月2日より放送・配信開始。dアニメストア・U-NEXT・DMM TV・Prime Video・ABEMAなど13サービスで地上波同時の見放題配信が行われており、Netflixは公式の配信サービス一覧に含まれていない。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "—"
+      }
+    },
+    {
+      "slug": "korekaite-shine",
+      "title": "これ描いて死ね",
+      "season": "2026年夏 / TVシリーズ（新作）",
+      "checked_at": "2026-07-06",
+      "official_url": "https://www.vap.co.jp/korekaite-shine/",
+      "summary": "とよ田みのる原作・シンエイ動画制作のTVアニメで、2026年7月3日より日本テレビ系「フラアニ」枠で放送中。2026年7月6日時点ではU-NEXT・ABEMA・Amazon Prime Video（およびLemino等）で見放題配信中、dアニメストア・DMM TV・Netflixは「配信予定」（7月6日24時＝7月7日0時以降順次開始予定）で同日時点では未配信。",
+      "availability": {
+        "danime": "—",
+        "unext": "見放題",
+        "dmmtv": "—",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "—"
+      }
+    },
+    {
+      "slug": "tetsunabe-no-jan",
+      "title": "鉄鍋のジャン！",
+      "season": "2026年夏 / TVシリーズ（初アニメ化）",
+      "checked_at": "2026-07-06",
+      "official_url": "https://tetsujan.com/",
+      "summary": "西条真二の料理バトル漫画を原作とする初のTVアニメで、2026年7月5日よりテレ東系列6局で放送開始。公式サイトの配信情報によると、7月5日夕方6時以降にABEMA・U-NEXT等で先行配信、7月12日以降にdアニメストア・DMM TV等で見放題配信、Prime Videoは個別課金（レンタル）配信で、Netflixは公式の配信サービス一覧に記載がない。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "レンタル",
+        "abema": "見放題",
+        "netflix": "—"
+      }
+    },
+    {
+      "slug": "azurlane-bisoku-2",
+      "title": "アズールレーン びそくぜんしんっ！にっ！！",
+      "season": "2026年夏 / TVシリーズ（ショートアニメ第2期）",
+      "checked_at": "2026-07-06",
+      "official_url": "https://www.azurlane-bisoku.jp/",
+      "summary": "スマホゲーム「アズールレーン」公式スピンオフ4コマ原作のショートアニメ第2期で、2026年7月5日よりTOKYO MX・BS11で放送開始。dアニメストア・U-NEXT・DMM TV・Prime Video・ABEMAなど多数のサービスで見放題配信され、Netflixのみ配信対象外。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "—"
+      }
+    },
+    {
+      "slug": "yanineko",
+      "title": "ヤニねこ",
+      "season": "2026年夏 / TVシリーズ",
+      "checked_at": "2026-07-06",
+      "official_url": "https://yanineko-anime.com/",
+      "summary": "タバコと酒を愛する猫を描いた脱力系コメディのTVアニメで、2026年7月2日よりTOKYO MX・BS11ほかで放送中。公式サイトによりdアニメストア・U-NEXT・DMM TV・Prime Video・ABEMA・Netflixを含む22サービスで7月2日より毎週木曜25:00から順次配信されており、対象6サービスはいずれも見放題配信。",
+      "availability": {
+        "danime": "見放題",
+        "unext": "見放題",
+        "dmmtv": "見放題",
+        "primevideo": "見放題",
+        "abema": "見放題",
+        "netflix": "見放題"
+      }
+    },
+    {
       "slug": "sousou-no-frieren",
       "title": "葬送のフリーレン",
-      "season": "TVシリーズ",
-      "checked_at": "2026-06-12",
+      "season": "第1期: 2023年秋〜2024年冬（全28話）/ 第2期: 2026年1月17日放送開始",
+      "checked_at": "2026-07-06",
       "official_url": "https://frieren-anime.jp/",
-      "sample": true,
-      "summary": "魔王討伐後の世界を描くファンタジー。配信サービスでの取り扱いが広い作品。",
+      "summary": "「葬送のフリーレン」は山田鐘人・アベツカサ原作の人気TVアニメで、第1期（全28話）に続き2026年1月17日から第2期が放送・配信中。2026年7月6日時点で、dアニメストア・U-NEXT・DMM TV・Amazon Prime Video・ABEMA・Netflixのいずれでも見放題で配信されており、特定サービスの独占配信ではない。",
       "availability": {
         "danime": "見放題",
         "unext": "見放題",
@@ -30,28 +209,26 @@
     {
       "slug": "kusuriya-no-hitorigoto",
       "title": "薬屋のひとりごと",
-      "season": "TVシリーズ",
-      "checked_at": "2026-06-12",
+      "season": "TVシリーズ（第1期2023年10月〜/第2期2025年1月〜、カタログ配信）",
+      "checked_at": "2026-07-06",
       "official_url": "https://kusuriyanohitorigoto.jp/",
-      "sample": true,
-      "summary": "後宮を舞台にしたミステリー。シリーズ累計で配信需要が継続している作品。",
+      "summary": "「薬屋のひとりごと」は第1期・第2期（全48話）が放送済みの人気TVアニメで、2026年7月6日時点では特定サービスの独占ではなく主要VODで広くカタログ配信されている。アニメ！アニメ！（2026年6月時点の配信情報）およびシネマトゥデイのまとめでdアニメストア・U-NEXT・DMM TV・Prime Video・Netflix・ABEMAいずれも見放題配信を確認した。",
       "availability": {
         "danime": "見放題",
         "unext": "見放題",
         "dmmtv": "見放題",
         "primevideo": "見放題",
         "abema": "見放題",
-        "netflix": "—"
+        "netflix": "見放題"
       }
     },
     {
       "slug": "jujutsu-kaisen",
       "title": "呪術廻戦",
-      "season": "TVシリーズ",
-      "checked_at": "2026-06-12",
+      "season": "TVシリーズ（第1期2020年・第2期2023年・第3期2026年冬／カタログ配信）",
+      "checked_at": "2026-07-06",
       "official_url": "https://jujutsukaisen.jp/",
-      "sample": true,
-      "summary": "呪いをめぐるダークファンタジー。劇場版含め配信網羅性の高い作品。",
+      "summary": "TVアニメ「呪術廻戦」はdアニメストア・U-NEXT・DMM TV・ABEMAで各期見放題配信中で、Netflixは第1期のみ見放題（第2期は配信なしの情報）。Prime Videoは第2期・第3期が見放題である一方、第1期は見放題対象外（エピソード単位レンタル220円）との情報があり、期によって状況が異なる。",
       "availability": {
         "danime": "見放題",
         "unext": "見放題",
@@ -64,11 +241,10 @@
     {
       "slug": "spy-family",
       "title": "SPY×FAMILY",
-      "season": "TVシリーズ",
-      "checked_at": "2026-06-12",
+      "season": "TVシリーズ（Season 1: 2022年〜Season 3: 2025年秋、既放送のカタログ配信）",
+      "checked_at": "2026-07-06",
       "official_url": "https://spy-family.net/",
-      "sample": true,
-      "summary": "スパイ×超能力者×殺し屋のホームコメディ。家族層にも配信需要が広い。",
+      "summary": "『SPY×FAMILY』はWIT STUDIO×CloverWorks制作のTVアニメで、Season 1〜3（既放送）がカタログ配信中。2026年7月6日時点で、dアニメストア・U-NEXT・DMM TV・Prime Video・ABEMA・Netflixの主要6サービスすべてで見放題配信が確認できた。",
       "availability": {
         "danime": "見放題",
         "unext": "見放題",
@@ -81,11 +257,10 @@
     {
       "slug": "oshi-no-ko",
       "title": "【推しの子】",
-      "season": "TVシリーズ",
-      "checked_at": "2026-06-12",
+      "season": "TVシリーズ（第1期2023年春〜第3期2026年冬）／カタログ配信",
+      "checked_at": "2026-07-06",
       "official_url": "https://ichigoproduction.com/",
-      "sample": true,
-      "summary": "芸能界を舞台にした転生サスペンス。推し活層と配信検索の親和性が高い作品。",
+      "summary": "赤坂アカ×横槍メンゴ原作のTVアニメで、第1期・第2期に加え2026年1月14日放送開始の第3期まで展開。公式サイトのSTREAMINGページにより、dアニメストア・U-NEXT・DMM TV・Prime Video・Netflixで全期見放題、ABEMAでも第2期・第3期が見放題配信中と確認できた（独占配信ではない）。",
       "availability": {
         "danime": "見放題",
         "unext": "見放題",
@@ -93,23 +268,6 @@
         "primevideo": "見放題",
         "abema": "見放題",
         "netflix": "見放題"
-      }
-    },
-    {
-      "slug": "bocchi-the-rock",
-      "title": "ぼっち・ざ・ろっく！",
-      "season": "TVシリーズ",
-      "checked_at": "2026-06-12",
-      "official_url": "https://bocchi.rocks/",
-      "sample": true,
-      "summary": "陰キャ少女がバンドで成長する青春音楽アニメ。ロングテールで配信検索が続く作品。",
-      "availability": {
-        "danime": "見放題",
-        "unext": "見放題",
-        "dmmtv": "見放題",
-        "primevideo": "見放題",
-        "abema": "—",
-        "netflix": "—"
       }
     }
   ]

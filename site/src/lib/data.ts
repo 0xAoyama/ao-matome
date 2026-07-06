@@ -17,7 +17,7 @@ export interface StreamingWork {
   season: string;
   checked_at: string;
   official_url: string;
-  sample: boolean;
+  sample?: boolean;
   summary: string;
   availability: Record<string, string>;
 }
@@ -48,7 +48,7 @@ export interface GoodsItem {
   status: string;
   checked_at: string;
   official_url: string;
-  sample: boolean;
+  sample?: boolean;
   summary: string;
   stores: GoodsStore[];
 }

@@ -40,7 +40,9 @@ const hasSample = streaming.works.some(w => w.sample) || goods.items.some(i => i
               <td class="center">
                 {w.availability[s.id] === '見放題'
                   ? <span class="avail">◎</span>
-                  : <span class="none">—</span>}
+                  : w.availability[s.id] === 'レンタル'
+                    ? <span class="none">レンタル</span>
+                    : <span class="none">—</span>}
               </td>
             ))}
           </tr>
@@ -48,9 +50,12 @@ const hasSample = streaming.works.some(w => w.sample) || goods.items.some(i => i
       </tbody>
     </table>
   </div>
-  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / —=配信なしまたは未確認。最新の配信状況は各サービス公式でご確認ください。</p>
+  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / レンタル=個別課金 / —=配信なしまたは未確認。最新の配信状況は各サービス公式でご確認ください。</p>
 
   <h2>締切が近い予約</h2>
+  {goods.items.length === 0 && (
+    <p class="notice">公式ソースで確認済みの予約商品は現在準備中です。未検証のデモ商品は掲載していません。</p>
+  )}
   {goods.items.map(item => (
     <a href={`/goods/${item.slug}/`} class="card">
       <h3>{item.title}</h3>

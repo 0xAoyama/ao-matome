@@ -45,10 +45,11 @@ const watchable = services.filter(s => work.availability[s.id] === '見放題');
           const status = work.availability[s.id] ?? '—';
           const link = vodLink(s.id);
           const isAvail = status === '見放題';
+          const isRental = status === 'レンタル';
           return (
             <tr>
               <td><strong>{s.name}</strong></td>
-              <td class="center">{isAvail ? <span class="avail">◎ 見放題</span> : <span class="none">—</span>}</td>
+              <td class="center">{isAvail ? <span class="avail">◎ 見放題</span> : isRental ? <span class="none">レンタル</span> : <span class="none">—</span>}</td>
               <td>{s.monthly}</td>
               <td>{s.trial}</td>
               <td style="font-size:0.85rem;">{s.strength}</td>
@@ -66,7 +67,7 @@ const watchable = services.filter(s => work.availability[s.id] === '見放題');
       </tbody>
     </table>
   </div>
-  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / —=配信なしまたは未確認。料金・無料期間は確認日時点の情報です。</p>
+  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / レンタル=個別課金 / —=配信なしまたは未確認。料金・無料期間は確認日時点の情報です。</p>
 
   <h2>よくある質問</h2>
   <div class="card">
