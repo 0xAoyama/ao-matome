@@ -13,25 +13,50 @@ export function getStaticPaths() {
 
 const { work, services } = Astro.props;
 const watchable = services.filter(s => work.availability[s.id] === '見放題');
+const rentalOnly = services.filter(s => work.availability[s.id] === 'レンタル');
+const verdict = watchable.length > 0 ? 'watch' : rentalOnly.length > 0 ? 'rental' : 'no';
+const verdictLabel = verdict === 'watch' ? '見放題あり' : verdict === 'rental' ? 'レンタルのみ' : '配信なし / 未確認';
 ---
 <Base title={`${work.title} はどこで見れる？配信サービス比較`} description={`${work.title} の配信サービス対応状況。見放題で視聴できるサービスの料金・無料期間を比較（確認日: ${work.checked_at}）。`}>
   <h1>{work.title} はどこで見れる？</h1>
   <p class="meta" style="margin-top:0.3rem;">
-    {work.season} / 確認日 {work.checked_at} / <a href={work.official_url} rel="noopener" target="_blank">アニメ公式サイト</a>
+    {work.season}
     {work.sample && <span class="badge sample" style="margin-left:0.4rem;">デモデータ</span>}
   </p>
+
+  <div class={`verdict-card ${verdict}`}>
+    <span class="verdict-label">結論: {verdictLabel}</span>
+    <p class="verdict-main">
+      {verdict === 'watch' && (
+        <>
+          <strong>{work.title}</strong> は
+          <strong style="color:var(--c-ok);">{watchable.map(s => s.name).join('・')}</strong>
+          で見放題配信中です。
+        </>
+      )}
+      {verdict === 'rental' && (
+        <>
+          <strong>{work.title}</strong> の見放題配信は確認できていません。
+          <strong style="color:var(--c-warn);">{rentalOnly.map(s => s.name).join('・')}</strong>
+          でレンタル（個別課金）視聴が可能です。
+        </>
+      )}
+      {verdict === 'no' && (
+        <>
+          <strong>{work.title}</strong> の配信は、確認日時点では主要6サービスで確認できていません。
+        </>
+      )}
+    </p>
+    <div class="verdict-meta">
+      <span>最終確認日: <strong>{work.checked_at}</strong></span>
+      <span>出典: <a href={work.official_url} rel="noopener" target="_blank">アニメ公式サイト</a></span>
+    </div>
+  </div>
+
   <p style="margin-top:0.6rem;">{work.summary}</p>
 
   {work.sample && (
     <p class="notice">このページはパイプライン稼働前の<strong>デモデータ</strong>です。実際の配信状況は各サービスでご確認ください。</p>
-  )}
-
-  {watchable.length > 0 && (
-    <p style="margin-top:1rem;">
-      結論: <strong>{work.title}</strong> は
-      <strong style="color:var(--c-accent);">{watchable.map(s => s.name).join('・')}</strong>
-      で見放題配信中です（確認日時点）。
-    </p>
   )}
 
   <h2>配信サービス対応表</h2>
@@ -49,11 +74,11 @@ const watchable = services.filter(s => work.availability[s.id] === '見放題');
           return (
             <tr>
               <td><strong>{s.name}</strong></td>
-              <td class="center">{isAvail ? <span class="avail">◎ 見放題</span> : isRental ? <span class="none">レンタル</span> : <span class="none">—</span>}</td>
+              <td class="center">{isAvail ? <span class="status-pill watch">見放題</span> : isRental ? <span class="status-pill rental">レンタル</span> : <span class="status-pill no">—</span>}</td>
               <td>{s.monthly}</td>
               <td>{s.trial}</td>
               <td style="font-size:0.85rem;">{s.strength}</td>
-              <td class="center">
+              <td class="center" style="white-space:nowrap;">
                 {isAvail && (
                   <>
                     <a href={link.url} class="cta" style="padding:0.3rem 0.9rem; font-size:0.82rem;" rel="nofollow sponsored noopener" target="_blank">今すぐ見る</a>
@@ -67,7 +92,7 @@ const watchable = services.filter(s => work.availability[s.id] === '見放題');
       </tbody>
     </table>
   </div>
-  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / レンタル=個別課金 / —=配信なしまたは未確認。料金・無料期間は確認日時点の情報です。</p>
+  <p class="meta" style="margin-top:0.4rem;">見放題=追加課金なし / レンタル=個別課金 / —=配信なしまたは未確認。料金・無料期間は確認日時点の情報です。</p>
 
   <h2>よくある質問</h2>
   <div class="card">
