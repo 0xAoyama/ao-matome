@@ -14,21 +14,26 @@ const { title, description = 'matrix-ao — アニメの配信・グッズ予約
   <meta name="description" content={description} />
   <link rel="sitemap" href="/sitemap-index.xml" />
   <link rel="alternate" type="application/rss+xml" title="matrix-ao RSS" href="/rss.xml" />
-  <style>
+  <style is:global>
     :root {
       --max-w: 1080px;
-      --c-bg: #faf9fc;
+      --c-bg: #f6f8fb;
       --c-card: #ffffff;
-      --c-fg: #211f33;
-      --c-muted: #6b7280;
-      --c-border: #e7e4f0;
-      --c-accent: #6d28d9;
-      --c-accent-dark: #4c1d95;
-      --c-accent-soft: #f3eefe;
+      --c-fg: #17233b;
+      --c-muted: #5c6b84;
+      --c-border: #dfe6f0;
+      --c-accent: #2563eb;
+      --c-accent-dark: #1e3a8a;
+      --c-accent-soft: #eef4ff;
+      --c-cyan: #0891b2;
+      --c-cyan-soft: #ecfeff;
+      --c-pink: #db2777;
+      --c-pink-soft: #fdf2f8;
       --c-warn: #b45309;
-      --c-warn-soft: #fef3e2;
+      --c-warn-soft: #fffbeb;
       --c-ok: #047857;
-      --c-ok-soft: #e8f7f1;
+      --c-ok-soft: #ecfdf5;
+      --shadow-card: 0 1px 2px rgba(23, 35, 59, 0.04), 0 4px 16px rgba(23, 35, 59, 0.05);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; }
     body {
@@ -37,61 +42,172 @@ const { title, description = 'matrix-ao — アニメの配信・グッズ予約
     }
     a { color: var(--c-accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    h1 { font-size: 1.7rem; line-height: 1.4; }
-    h2 { font-size: 1.25rem; margin: 2.2rem 0 0.8rem; padding-left: 0.6rem; border-left: 4px solid var(--c-accent); }
+    h1 { font-size: 1.7rem; line-height: 1.4; letter-spacing: 0.01em; }
+    h2 {
+      font-size: 1.22rem; margin: 2.4rem 0 0.9rem;
+      padding: 0.4rem 0.85rem; border-left: 4px solid var(--c-accent);
+      background: linear-gradient(90deg, var(--c-accent-soft) 0%, rgba(238, 244, 255, 0) 85%);
+      border-radius: 0 6px 6px 0;
+    }
     h3 { font-size: 1.05rem; }
 
+    /* ---- 信頼バー・ヘッダー ---- */
     .trustbar {
-      background: var(--c-accent-dark); color: #ede9fe; font-size: 0.78rem;
-      text-align: center; padding: 0.35rem 1rem;
+      background: var(--c-accent-dark); color: #dbeafe; font-size: 0.78rem;
+      text-align: center; padding: 0.4rem 1rem; letter-spacing: 0.02em;
     }
-    header.site { background: var(--c-card); border-bottom: 1px solid var(--c-border); }
+    .trustbar strong { color: #fff; font-weight: 700; }
+    header.site {
+      background: var(--c-card); border-bottom: 1px solid var(--c-border);
+      position: relative;
+    }
+    header.site::after {
+      content: ''; display: block; height: 3px;
+      background: linear-gradient(90deg, var(--c-accent-dark) 0%, var(--c-accent) 45%, var(--c-cyan) 75%, var(--c-pink) 100%);
+    }
     header.site .inner {
-      max-width: var(--max-w); margin: 0 auto; padding: 0.8rem 1rem;
+      max-width: var(--max-w); margin: 0 auto; padding: 0.85rem 1rem;
       display: flex; gap: 1.4rem; align-items: baseline; flex-wrap: wrap;
     }
-    .logo { font-weight: 800; font-size: 1.25rem; color: var(--c-accent-dark); letter-spacing: 0.02em; }
+    .logo { font-weight: 800; font-size: 1.3rem; color: var(--c-accent-dark); letter-spacing: 0.02em; }
     .logo:hover { text-decoration: none; }
-    .logo small { font-weight: 600; font-size: 0.72rem; color: var(--c-muted); margin-left: 0.5rem; }
-    header.site nav { display: flex; gap: 1.1rem; font-size: 0.92rem; font-weight: 600; }
+    .logo small { font-weight: 600; font-size: 0.72rem; color: var(--c-muted); margin-left: 0.5rem; letter-spacing: 0; }
+    header.site nav { display: flex; gap: 0.35rem; font-size: 0.9rem; font-weight: 600; flex-wrap: wrap; }
+    header.site nav a {
+      color: var(--c-fg); padding: 0.25rem 0.85rem; border-radius: 99px;
+      transition: background 0.15s, color 0.15s;
+    }
+    header.site nav a:hover { background: var(--c-accent-soft); color: var(--c-accent-dark); text-decoration: none; }
 
     main { max-width: var(--max-w); margin: 1.8rem auto 0; padding: 0 1rem; }
 
     footer.site { border-top: 1px solid var(--c-border); background: var(--c-card); margin-top: 4rem; }
     footer.site .inner { max-width: var(--max-w); margin: 0 auto; padding: 1.6rem 1rem; color: var(--c-muted); font-size: 0.8rem; }
 
-    .card {
-      background: var(--c-card); border: 1px solid var(--c-border); border-radius: 10px;
-      padding: 1.1rem 1.2rem; margin-bottom: 0.9rem;
+    /* ---- ヒーロー・確認バー ---- */
+    .hero { text-align: center; padding: 2rem 0 0.6rem; }
+    .hero h1 { font-size: 1.95rem; }
+    .hero .lede { color: var(--c-muted); font-size: 0.98rem; margin-top: 0.5rem; }
+    .checkbar {
+      display: flex; gap: 0.5rem 1.1rem; flex-wrap: wrap; align-items: center; justify-content: center;
+      background: var(--c-card); border: 1px solid var(--c-border); border-radius: 99px;
+      padding: 0.45rem 1.2rem; margin: 1.1rem auto 0; width: fit-content; max-width: 100%;
+      font-size: 0.8rem; color: var(--c-muted); box-shadow: var(--shadow-card);
     }
-    a.card { display: block; color: inherit; transition: border-color 0.15s, box-shadow 0.15s; }
-    a.card:hover { text-decoration: none; border-color: var(--c-accent); box-shadow: 0 2px 10px rgba(109, 40, 217, 0.08); }
+    .checkbar b { color: var(--c-fg); font-weight: 700; }
+    .checkbar .dot { color: var(--c-border); }
+
+    /* ---- 比較軸カード（検証ポイント） ---- */
+    .axis-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.7rem; margin: 1.4rem 0;
+    }
+    .axis-card {
+      background: var(--c-card); border: 1px solid var(--c-border); border-radius: 10px;
+      padding: 0.7rem 0.9rem; text-align: center; box-shadow: var(--shadow-card);
+    }
+    .axis-card .axis-icon { font-size: 1.3rem; line-height: 1.2; }
+    .axis-card .axis-name { font-weight: 700; font-size: 0.88rem; margin-top: 0.15rem; }
+    .axis-card .axis-desc { font-size: 0.74rem; color: var(--c-muted); line-height: 1.5; margin-top: 0.1rem; }
+
+    /* ---- サービスチップ ---- */
+    .chips { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin: 1rem 0; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: var(--c-card); border: 1px solid var(--c-border); border-radius: 99px;
+      padding: 0.25rem 0.9rem; font-size: 0.82rem; font-weight: 700; color: var(--c-accent-dark);
+      box-shadow: var(--shadow-card);
+    }
+    .chip small { font-weight: 600; color: var(--c-muted); font-size: 0.72rem; }
+
+    /* ---- カード ---- */
+    .card {
+      background: var(--c-card); border: 1px solid var(--c-border); border-radius: 12px;
+      padding: 1.1rem 1.2rem; margin-bottom: 0.9rem; box-shadow: var(--shadow-card);
+    }
+    a.card { display: block; color: inherit; transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s; }
+    a.card:hover {
+      text-decoration: none; border-color: var(--c-accent);
+      box-shadow: 0 4px 18px rgba(37, 99, 235, 0.12); transform: translateY(-1px);
+    }
     .meta { color: var(--c-muted); font-size: 0.83rem; }
 
+    /* ---- バッジ ---- */
     .badge {
       display: inline-block; font-size: 0.72rem; font-weight: 700; line-height: 1.5;
       padding: 0.05rem 0.55rem; border-radius: 99px; vertical-align: middle;
     }
     .badge.official { background: var(--c-accent-soft); color: var(--c-accent-dark); }
-    .badge.pr { background: var(--c-warn-soft); color: var(--c-warn); }
+    .badge.pr { background: var(--c-warn-soft); color: var(--c-warn); border: 1px solid #f5d9ae; }
     .badge.ok { background: var(--c-ok-soft); color: var(--c-ok); }
-    .badge.deadline { background: #fde8e8; color: #b91c1c; }
+    .badge.deadline { background: var(--c-pink-soft); color: var(--c-pink); }
     .badge.sample { background: #eceef2; color: #4b5563; }
 
-    table.cmp { width: 100%; border-collapse: collapse; background: var(--c-card); border-radius: 10px; overflow: hidden; font-size: 0.9rem; }
-    table.cmp th, table.cmp td { border: 1px solid var(--c-border); padding: 0.55rem 0.7rem; text-align: left; }
-    table.cmp thead th { background: var(--c-accent-soft); color: var(--c-accent-dark); font-size: 0.82rem; }
+    /* ---- テーブル（オリコン風の色帯見出し） ---- */
+    table.cmp {
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      background: var(--c-card); font-size: 0.9rem;
+      border: 1px solid var(--c-border); border-radius: 10px; overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    table.cmp th, table.cmp td { border-bottom: 1px solid var(--c-border); border-right: 1px solid var(--c-border); padding: 0.55rem 0.7rem; text-align: left; }
+    table.cmp th:last-child, table.cmp td:last-child { border-right: none; }
+    table.cmp tbody tr:last-child td { border-bottom: none; }
+    table.cmp thead th {
+      background: var(--c-accent-dark); color: #fff; font-size: 0.8rem;
+      letter-spacing: 0.03em; border-bottom: none; border-right-color: rgba(255,255,255,0.16);
+    }
+    table.cmp tbody tr:nth-child(even) td { background: #fafcff; }
     table.cmp td.center, table.cmp th.center { text-align: center; }
     table.cmp .avail { color: var(--c-ok); font-weight: 700; }
-    table.cmp .none { color: #c0c4cc; }
-    .table-scroll { overflow-x: auto; }
+    table.cmp .none { color: #b6bdc9; }
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
+    /* 作品×サービスのマトリクス表: 先頭列を固定して横スクロールでも迷わない */
+    table.cmp.matrix th:first-child, table.cmp.matrix td:first-child {
+      position: sticky; left: 0; z-index: 1; background: var(--c-card); min-width: 11em;
+    }
+    table.cmp.matrix thead th:first-child { background: var(--c-accent-dark); }
+    table.cmp.matrix tbody tr:nth-child(even) td:first-child { background: #fafcff; }
+
+    /* ---- 配信状況ピル ---- */
+    .status-pill {
+      display: inline-block; font-size: 0.76rem; font-weight: 700; line-height: 1.6;
+      padding: 0.05rem 0.6rem; border-radius: 99px; white-space: nowrap;
+    }
+    .status-pill.watch { background: var(--c-ok-soft); color: var(--c-ok); }
+    .status-pill.rental { background: var(--c-warn-soft); color: var(--c-warn); }
+    .status-pill.no { background: transparent; color: #b6bdc9; font-weight: 600; }
+
+    /* ---- 結論カード（作品詳細の最上部） ---- */
+    .verdict-card {
+      border-radius: 14px; padding: 1.15rem 1.3rem; margin: 1.2rem 0;
+      border: 1.5px solid; box-shadow: var(--shadow-card);
+    }
+    .verdict-card.watch { background: var(--c-ok-soft); border-color: #a7e3cd; }
+    .verdict-card.rental { background: var(--c-warn-soft); border-color: #f5d9ae; }
+    .verdict-card.no { background: #f4f5f8; border-color: var(--c-border); }
+    .verdict-card .verdict-label {
+      display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em;
+      border-radius: 6px; padding: 0.1rem 0.6rem; color: #fff;
+    }
+    .verdict-card.watch .verdict-label { background: var(--c-ok); }
+    .verdict-card.rental .verdict-label { background: var(--c-warn); }
+    .verdict-card.no .verdict-label { background: #6b7280; }
+    .verdict-card .verdict-main { font-size: 1.08rem; font-weight: 700; margin-top: 0.45rem; line-height: 1.6; }
+    .verdict-card .verdict-meta {
+      display: flex; gap: 0.4rem 1.1rem; flex-wrap: wrap;
+      font-size: 0.8rem; color: var(--c-muted); margin-top: 0.55rem;
+    }
+
+    /* ---- CTA ---- */
     .cta {
       display: inline-block; background: var(--c-accent); color: #fff; font-weight: 700;
       padding: 0.55rem 1.3rem; border-radius: 8px; font-size: 0.92rem;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28);
     }
     .cta:hover { background: var(--c-accent-dark); text-decoration: none; }
-    .cta.sub { background: var(--c-card); color: var(--c-accent); border: 1.5px solid var(--c-accent); }
+    .cta.sub { background: var(--c-card); color: var(--c-accent); border: 1.5px solid var(--c-accent); box-shadow: none; }
     .cta.sub:hover { background: var(--c-accent-soft); }
 
     .notice {
@@ -104,12 +220,14 @@ const { title, description = 'matrix-ao — アニメの配信・グッズ予約
     }
     @media (max-width: 720px) {
       h1 { font-size: 1.35rem; }
-      header.site nav { gap: 0.8rem; font-size: 0.85rem; }
+      .hero h1 { font-size: 1.5rem; }
+      header.site nav { gap: 0.2rem; font-size: 0.84rem; }
+      header.site nav a { padding: 0.2rem 0.6rem; }
     }
   </style>
 </head>
 <body>
-  <div class="trustbar">公式ソースのみ要約 / 本文・画像の転載なし / 広告リンクにはPR表記あり / 全ページに確認日を掲載</div>
+  <div class="trustbar"><strong>公式ソースのみ要約</strong> / 本文・画像の転載なし / 広告リンクにはPR表記あり / 全ページに確認日を掲載</div>
   <header class="site">
     <div class="inner">
       <a href="/" class="logo">matrix-ao<small>アニメ配信・予約・特典ナビ</small></a>

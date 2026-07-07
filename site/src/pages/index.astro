@@ -9,23 +9,56 @@ const posts = getPosts().slice(0, 8);
 const hasSample = streaming.works.some(w => w.sample) || goods.items.some(i => i.sample);
 ---
 <Base title="アニメ配信どこで見れる？グッズ予約・特典比較" description="今期アニメの配信サービス対応表、グッズ予約の店舗別特典比較、推し活ニュースを公式情報だけでまとめる matrix-ao">
-  <section style="text-align:center; padding: 1.6rem 0 0.4rem;">
+  <section class="hero">
     <h1>そのアニメ、<span style="color: var(--c-accent);">どこで見れる？</span></h1>
-    <p class="meta" style="font-size:0.95rem; margin-top:0.4rem;">配信サービス対応表と、グッズ予約の店舗別特典比較。公式情報だけを毎日更新。</p>
-    <p style="margin-top:1rem; display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
-      <a href="/streaming/" class="cta">配信対応表を見る</a>
+    <p class="lede">今期アニメの配信サービス対応表と、グッズ予約の店舗別特典比較。公式情報だけをまとめています。</p>
+    <div class="checkbar">
+      <span><b>公式ソース確認済み</b></span>
+      <span class="dot">|</span>
+      <span>確認日 <b>{streaming.updated_at}</b></span>
+      <span class="dot">|</span>
+      <span>広告リンクは<b>PR表記</b>で明示</span>
+    </div>
+    <p style="margin-top:1.2rem; display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
+      <a href="/streaming/" class="cta">今期アニメの配信早見表を見る</a>
       <a href="/goods/" class="cta sub">予約・特典比較を見る</a>
     </p>
+    <div class="chips" aria-label="比較対象の配信サービス">
+      {streaming.services.map(s => <span class="chip">{s.name}<small>{s.monthly}</small></span>)}
+    </div>
   </section>
+
+  <div class="axis-grid">
+    <div class="axis-card">
+      <div class="axis-icon">📺</div>
+      <div class="axis-name">配信有無</div>
+      <div class="axis-desc">見放題・レンタル・配信なしを作品ごとに整理</div>
+    </div>
+    <div class="axis-card">
+      <div class="axis-icon">💰</div>
+      <div class="axis-name">月額料金</div>
+      <div class="axis-desc">6サービスの月額と無料期間を横並び比較</div>
+    </div>
+    <div class="axis-card">
+      <div class="axis-icon">🎁</div>
+      <div class="axis-name">予約特典</div>
+      <div class="axis-desc">グッズは店舗別の価格・特典・締切を比較</div>
+    </div>
+    <div class="axis-card">
+      <div class="axis-icon">✅</div>
+      <div class="axis-name">公式確認日</div>
+      <div class="axis-desc">すべての情報に公式ソースと確認日を明記</div>
+    </div>
+  </div>
 
   {hasSample && (
     <p class="notice">現在掲載中の対応表・比較表の一部はパイプライン稼働前の<strong>デモデータ</strong>です（<span class="badge sample">デモ</span>表示つき）。</p>
   )}
 
-  <h2>配信サービス早見表</h2>
-  <p class="meta">作品名をタップすると料金・無料期間つきの詳細比較が見られます。（確認日: {streaming.updated_at}）</p>
+  <h2>今期アニメ 配信状況早見表</h2>
+  <p class="meta">作品名をタップすると、結論つきの詳細比較（料金・無料期間）が見られます。（確認日: {streaming.updated_at}）</p>
   <div class="table-scroll" style="margin-top:0.6rem;">
-    <table class="cmp">
+    <table class="cmp matrix">
       <thead>
         <tr>
           <th>作品</th>
@@ -39,10 +72,10 @@ const hasSample = streaming.works.some(w => w.sample) || goods.items.some(i => i
             {streaming.services.map(s => (
               <td class="center">
                 {w.availability[s.id] === '見放題'
-                  ? <span class="avail">◎</span>
+                  ? <span class="status-pill watch">見放題</span>
                   : w.availability[s.id] === 'レンタル'
-                    ? <span class="none">レンタル</span>
-                    : <span class="none">—</span>}
+                    ? <span class="status-pill rental">レンタル</span>
+                    : <span class="status-pill no">—</span>}
               </td>
             ))}
           </tr>
@@ -50,7 +83,7 @@ const hasSample = streaming.works.some(w => w.sample) || goods.items.some(i => i
       </tbody>
     </table>
   </div>
-  <p class="meta" style="margin-top:0.4rem;">◎=見放題対象 / レンタル=個別課金 / —=配信なしまたは未確認。最新の配信状況は各サービス公式でご確認ください。</p>
+  <p class="meta" style="margin-top:0.4rem;">見放題=追加課金なし / レンタル=個別課金 / —=配信なしまたは未確認。最新の配信状況は各サービス公式でご確認ください。</p>
 
   <h2>締切が近い予約</h2>
   {goods.items.length === 0 && (

@@ -6,12 +6,21 @@ import { vodLink } from '../../config/affiliates';
 const streaming = getStreaming();
 ---
 <Base title="アニメ配信どこで見れる？サービス対応表" description="アニメ作品ごとの配信サービス対応表。dアニメストア・U-NEXT・DMM TV・Prime Video・ABEMA・Netflixの見放題状況と料金・無料期間を比較。">
-  <h1>配信どこで見れる？対応表</h1>
-  <p class="meta">確認日: {streaming.updated_at} / 配信状況は変動します。リンク先で最新状況をご確認ください。</p>
+  <section class="hero" style="padding-top:1.2rem;">
+    <h1>配信どこで見れる？対応表</h1>
+    <p class="lede">今期アニメ×配信サービスの見放題対応を、公式発表ベースで一覧にしています。</p>
+    <div class="checkbar">
+      <span><b>公式ソース確認済み</b></span>
+      <span class="dot">|</span>
+      <span>確認日 <b>{streaming.updated_at}</b></span>
+      <span class="dot">|</span>
+      <span>広告リンクは<b>PR表記</b>で明示</span>
+    </div>
+  </section>
 
   <h2>作品×サービス対応表</h2>
   <div class="table-scroll">
-    <table class="cmp">
+    <table class="cmp matrix">
       <thead>
         <tr>
           <th>作品</th>
@@ -25,10 +34,10 @@ const streaming = getStreaming();
             {streaming.services.map(s => (
               <td class="center">
                 {w.availability[s.id] === '見放題'
-                  ? <span class="avail">◎</span>
+                  ? <span class="status-pill watch">見放題</span>
                   : w.availability[s.id] === 'レンタル'
-                    ? <span class="none">レンタル</span>
-                    : <span class="none">—</span>}
+                    ? <span class="status-pill rental">レンタル</span>
+                    : <span class="status-pill no">—</span>}
               </td>
             ))}
           </tr>
@@ -36,12 +45,13 @@ const streaming = getStreaming();
       </tbody>
     </table>
   </div>
+  <p class="meta" style="margin-top:0.4rem;">見放題=追加課金なし / レンタル=個別課金 / —=配信なしまたは未確認。配信状況は変動します。リンク先で最新状況をご確認ください。</p>
 
-  <h2>配信サービス比較</h2>
+  <h2>配信サービス比較（月額・無料期間）</h2>
   <div class="table-scroll">
     <table class="cmp">
       <thead>
-        <tr><th>サービス</th><th>月額</th><th>無料期間</th><th>特徴</th><th></th></tr>
+        <tr><th>サービス</th><th>月額</th><th>無料期間</th><th>特徴</th><th class="center">公式</th></tr>
       </thead>
       <tbody>
         {streaming.services.map(s => {
@@ -52,8 +62,8 @@ const streaming = getStreaming();
               <td>{s.monthly}</td>
               <td>{s.trial}</td>
               <td style="font-size:0.85rem;">{s.strength}</td>
-              <td class="center">
-                <a href={link.url} rel="nofollow sponsored noopener" target="_blank">公式サイト</a>
+              <td class="center" style="white-space:nowrap;">
+                <a href={link.url} class="cta sub" style="padding:0.25rem 0.8rem; font-size:0.8rem;" rel="nofollow sponsored noopener" target="_blank">公式サイト</a>
                 {link.isAffiliate && <span class="badge pr" style="margin-left:0.3rem;">PR</span>}
               </td>
             </tr>
@@ -62,16 +72,24 @@ const streaming = getStreaming();
       </tbody>
     </table>
   </div>
-  <p class="meta" style="margin-top:0.4rem;">料金・無料期間は確認日時点の情報です。キャンペーンにより変わる場合があります。</p>
+  <p class="meta" style="margin-top:0.4rem;">料金・無料期間は確認日（{streaming.updated_at}）時点の情報です。キャンペーンにより変わる場合があります。</p>
 
   <h2>作品別ページ</h2>
-  {streaming.works.map(w => (
-    <a href={`/streaming/${w.slug}/`} class="card">
-      <h3>{w.title} はどこで見れる？</h3>
-      <p class="meta" style="margin-top:0.2rem;">{w.season} / 確認日 {w.checked_at} {w.sample && <span class="badge sample">デモ</span>}</p>
-      <p style="font-size:0.9rem; margin-top:0.3rem;">{w.summary}</p>
-    </a>
-  ))}
+  {streaming.works.map(w => {
+    const watchCount = streaming.services.filter(s => w.availability[s.id] === '見放題').length;
+    return (
+      <a href={`/streaming/${w.slug}/`} class="card">
+        <h3>{w.title} はどこで見れる？</h3>
+        <p class="meta" style="margin-top:0.3rem;">
+          {watchCount > 0
+            ? <span class="status-pill watch">見放題 {watchCount}サービス</span>
+            : <span class="status-pill no">見放題なし</span>}
+          　{w.season} / 確認日 {w.checked_at} {w.sample && <span class="badge sample">デモ</span>}
+        </p>
+        <p style="font-size:0.9rem; margin-top:0.3rem;">{w.summary}</p>
+      </a>
+    );
+  })}
 
   <div class="disclaimer">
     <strong>注記:</strong> 本ページは各配信サービスの公式情報をもとにした対応表です。本文・画像の転載は行っていません。
